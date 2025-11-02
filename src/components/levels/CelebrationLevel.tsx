@@ -1,17 +1,11 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Level } from '../../types';
 import { levels as allLevels } from '../../data/levels';
 import { updateLevelProgress, unlockNextLevel } from '../../utils/progress';
 import { incrementLevelCompletedToday } from '../../utils/dailyQuests';
 import './CelebrationLevel.css';
-import type {
-  MatchTarget,
-  TimelineItem,
-  MemoryPair,
-  ColorConfig,
-  PuzzlePiece,
-} from '../../types/celebration';
+import type { MatchTarget, TimelineItem, MemoryPair, ColorConfig, PuzzlePiece } from '../../types/celebration';
 import { getCelebrationConfig } from '../../data/celebrationConfigs';
 
 interface MemoryCard {
@@ -105,7 +99,7 @@ const getInitialMatchState = (targets: MatchTarget[]): Record<string, string | n
   }, {});
 
 export default function CelebrationLevel({ level }: CelebrationLevelProps) {
-  const config = getCelebrationConfig(level.id);
+  const config = useMemo(() => getCelebrationConfig(level.id), [level.id]);
   const navigate = useNavigate();
 
   const stepLabels = useMemo(
