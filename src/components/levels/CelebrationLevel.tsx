@@ -252,6 +252,7 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
       updateLevelProgress(level.id, 3, true);
       unlockNextLevel(allLevels, level.id);
       incrementLevelCompletedToday();
+      window.dispatchEvent(new Event('progress-updated'));
       setProgressAwarded(true);
     }
   }, [currentStep, progressAwarded, level.id, stepLabels.length]);

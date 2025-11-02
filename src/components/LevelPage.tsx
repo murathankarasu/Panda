@@ -157,6 +157,7 @@ export default function LevelPage() {
       
       // Unlock next level
       unlockNextLevel(levels, levelId!);
+      window.dispatchEvent(new Event('progress-updated'));
       
       setTimeout(() => {
         navigate('/map');

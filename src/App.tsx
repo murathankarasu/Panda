@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Level } from './types';
 import { levels } from './data/levels';
 import { loadProgress } from './utils/progress';
@@ -17,10 +17,9 @@ function App() {
   const [levelsWithProgress, setLevelsWithProgress] = useState<Level[]>(levels);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    // Load progress and update levels
+  const refreshLevels = useCallback(() => {
     const progress = loadProgress();
-    
+
     setLevelsWithProgress(prevLevels => {
       const sortedLevels = [...prevLevels].sort((a, b) => a.order - b.order);
 
@@ -68,6 +67,21 @@ function App() {
 
     setIsLoading(false);
   }, []);
+
+  useEffect(() => {
+    refreshLevels();
+  }, [refreshLevels]);
+
+  useEffect(() => {
+    const handleProgressUpdated = () => {
+      refreshLevels();
+    };
+
+    window.addEventListener('progress-updated', handleProgressUpdated);
+    return () => {
+      window.removeEventListener('progress-updated', handleProgressUpdated);
+    };
+  }, [refreshLevels]);
 
   if (isLoading) {
     return <div className="loading-screen">Yükleniyor...</div>;
