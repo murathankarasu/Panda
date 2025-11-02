@@ -1,4 +1,4 @@
-# Sıla Abla - Özel Eğitim Platformu
+# Panda - Özel Eğitim Platformu
 
 Özel eğitimli çocuklar için interaktif eğitim platformu. Dini Bayramlar konusunda eğitici içerikler, hikayeler ve sorular içerir.
 
