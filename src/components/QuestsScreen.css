@@ -1,0 +1,262 @@
+.quests-view {
+  min-height: 100vh;
+  background: #ffffff;
+  display: flex;
+  overflow: hidden;
+}
+
+/* Left Sidebar - Same as MapView */
+.left-sidebar {
+  width: 200px;
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1rem;
+  position: fixed;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  z-index: 10;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.sidebar-logo-image {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.sidebar-logo-fallback {
+  width: 80px;
+  height: 80px;
+  font-size: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #22c55e;
+  border-radius: 12px;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #6b7280;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.nav-item:hover {
+  background: #f3f4f6;
+}
+
+.nav-item.active {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.nav-icon {
+  font-size: 1.2rem;
+}
+
+.nav-text {
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Main Content Area */
+.main-content-area {
+  flex: 1;
+  margin-left: 200px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #ffffff;
+  padding: 2rem;
+}
+
+/* Header */
+.quests-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.quests-icon-large {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.quests-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 0.5rem 0;
+}
+
+.quests-subtitle {
+  font-size: 1.1rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Quests List */
+.quests-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.quest-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1rem;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.quest-item:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.quest-item-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+}
+
+.quest-xp-icon,
+.quest-icon {
+  font-size: 1.5rem;
+  color: #f59e0b;
+}
+
+.quest-progress-text {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #6b7280;
+  margin-right: 0.5rem;
+  min-width: 50px;
+  text-align: right;
+}
+
+.quest-description {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.quest-item-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 250px;
+  justify-content: flex-end;
+}
+
+.quest-progress-bar {
+  width: 100%;
+  height: 12px;
+  background: #e5e7eb;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.quest-progress-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.3s ease;
+}
+
+.quest-progress-fill.active {
+  background: #000000;
+}
+
+.quest-progress-fill.completed {
+  background: #22c55e;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .left-sidebar {
+    width: 80px;
+    padding: 1rem 0.5rem;
+  }
+
+  .sidebar-logo-image {
+    width: 50px;
+    height: 50px;
+  }
+
+  .sidebar-logo-fallback {
+    width: 50px;
+    height: 50px;
+    font-size: 40px;
+  }
+
+  .nav-text {
+    display: none;
+  }
+
+  .main-content-area {
+    margin-left: 80px;
+    padding: 1.5rem 1rem;
+  }
+
+  .quests-title {
+    font-size: 2rem;
+  }
+
+  .quests-subtitle {
+    font-size: 1rem;
+  }
+
+  .quest-item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .quest-item-right {
+    min-width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .quest-progress-text {
+    text-align: left;
+    margin-bottom: 0.5rem;
+  }
+}
+
