@@ -1,66 +1,66 @@
-# Panda - Özel Eğitim Platformu
+# Sıla Abla - Special Education Platform
 
-Özel eğitimli çocuklar için interaktif eğitim platformu. Dini Bayramlar konusunda eğitici içerikler, hikayeler ve sorular içerir.
+Interactive educational platform for children with special needs. Contains educational content, stories, and questions about Religious Holidays.
 
-## 🎯 Proje Hakkında
+## 🎯 About the Project
 
-Bu platform, özel eğitimli çocuklar için tasarlanmış, kullanıcı dostu bir eğitim uygulamasıdır. Ramazan Bayramı konularını hikaye formatında anlatır ve interaktif sorularla öğrenmeyi pekiştirir.
+This platform is a user-friendly educational application designed for children with special needs. It presents topics about Ramadan Bayramı (Eid al-Fitr) in story format and reinforces learning through interactive questions.
 
-## ✨ Özellikler
+## ✨ Features
 
-### 🗺️ Öğrenme Haritası
-- Unit bazlı seviye sistemi
-- Seviyeleri tamamladıkça açılan kilit sistemi
-- Modern ve temiz kart tasarımları
-- Sol sidebar ile kolay navigasyon
+### 🗺️ Learning Map
+- Unit-based level system
+- Lock system that unlocks as levels are completed
+- Modern and clean card designs
+- Easy navigation with left sidebar
 
-### 📚 Hikaye Anlatımı
-- Her seviye için özel hikayeler
-- Görsel destekli içerik (WebP ve PNG formatları)
-- Dinamik görsel yükleme (order1.webp, order2.webp vb.)
+### 📚 Storytelling
+- Special stories for each level
+- Visually supported content (WebP and PNG formats)
+- Dynamic image loading (order1.webp, order2.webp, etc.)
 
-### 🔊 Sesli Okuma (TTS)
-- Google Translate TTS entegrasyonu
-- Ayarlanabilir ses seviyesi
-- Çocuklara uygun ses hızı
-- Play/Pause kontrolü
+### 🔊 Text-to-Speech (TTS)
+- Google Translate TTS integration
+- Adjustable volume level
+- Normal speech speed
+- Play/Pause control
 
-### 🎮 İnteraktif Sorular
-- Her hikayeden sonra konuyla ilgili sorular
-- Çoktan seçmeli soru tipleri
-- Anlık geri bildirim
+### 🎮 Interactive Questions
+- Questions related to each story
+- Multiple choice question types
+- Instant feedback
 
-### 🏆 Rozetler ve Görevler
-- Ünite tamamlama rozetleri
-- Günlük görev sistemi
-- İlerleme takibi
-- Rozet koleksiyonu görünümü
+### 🏆 Badges and Quests
+- Unit completion badges
+- Daily quest system
+- Progress tracking
+- Badge collection view
 
-### 📊 İlerleme Takibi
-- LocalStorage ile kalıcı kayıt
-- Kullanıcı ismi kaydı
-- Seviye tamamlama durumu
-- Günlük aktivite takibi
+### 📊 Progress Tracking
+- Persistent storage with LocalStorage
+- User name registration
+- Level completion status
+- Daily activity tracking
 
-## 🚀 Kurulum
+## 🚀 Installation
 
-### Gereksinimler
-- Node.js (v18 veya üzeri)
-- npm veya yarn
+### Requirements
+- Node.js (v18 or higher)
+- npm or yarn
 
-### Adımlar
+### Steps
 
-1. **Bağımlılıkları yükleyin:**
+1. **Install dependencies:**
 ```bash
 npm install
 ```
 
-2. **Geliştirme sunucusunu başlatın:**
+2. **Start development server:**
 ```bash
 npm run dev
 ```
 
-3. **Tarayıcıda açın:**
+3. **Open in browser:**
 ```
 http://localhost:5173
 ```
@@ -71,176 +71,176 @@ http://localhost:5173
 npm run build
 ```
 
-Build sonrası dosyalar `dist/` klasöründe oluşturulur.
+Build files will be created in the `dist/` folder.
 
 ```bash
 npm run preview
 ```
 
-## 📁 Proje Yapısı
+## 📁 Project Structure
 
 ```
 src/
-├── components/           # React bileşenleri
-│   ├── WelcomeScreen.tsx          # Hoş geldin ekranı
-│   ├── NameScreen.tsx             # İsim girme ekranı
-│   ├── WelcomeMessageScreen.tsx   # Karşılama mesajı ekranı
-│   ├── MapView.tsx                # Ana öğrenme haritası
-│   ├── LevelPage.tsx              # Seviye detay sayfası
-│   ├── QuestsScreen.tsx           # Görevler ekranı
-│   └── BadgesScreen.tsx           # Rozetler ekranı
-├── data/                # Veri dosyaları
-│   ├── levels.ts                  # Seviye tanımları
-│   └── levelContent.ts            # Seviye içerikleri ve sorular
-├── utils/               # Yardımcı fonksiyonlar
-│   ├── tts.ts                     # Text-to-speech servisi
-│   ├── progress.ts                # İlerleme takibi
-│   ├── badges.ts                  # Rozet yönetimi
-│   └── dailyQuests.ts             # Günlük görev yönetimi
-└── types.ts             # TypeScript tipleri
+├── components/           # React components
+│   ├── WelcomeScreen.tsx          # Welcome screen
+│   ├── NameScreen.tsx             # Name input screen
+│   ├── WelcomeMessageScreen.tsx   # Welcome message screen
+│   ├── MapView.tsx                # Main learning map
+│   ├── LevelPage.tsx              # Level detail page
+│   ├── QuestsScreen.tsx           # Quests screen
+│   └── BadgesScreen.tsx           # Badges screen
+├── data/                # Data files
+│   ├── levels.ts                  # Level definitions
+│   └── levelContent.ts            # Level content and questions
+├── utils/               # Utility functions
+│   ├── tts.ts                     # Text-to-speech service
+│   ├── progress.ts                # Progress tracking
+│   ├── badges.ts                  # Badge management
+│   └── dailyQuests.ts             # Daily quest management
+└── types.ts             # TypeScript types
 ```
 
-## 🎨 Ekranlar ve Özellikler
+## 🎨 Screens and Features
 
-### 1. Hoş Geldin Ekranı
-- Panda karakterleri (1.png - 5.png)
-- Beyaz arka plan
-- "GET STARTED" butonu ile başlangıç
+### 1. Welcome Screen
+- Panda characters (1.png - 5.png)
+- White background
+- "GET STARTED" button to begin
 
-### 2. İsim Girme Ekranı
-- Kullanıcıdan isim alma
-- Panda görseli ile modern tasarım
-- "GÖNDER" butonu ile devam
+### 2. Name Input Screen
+- Collects user name
+- Modern design with panda image
+- "GÖNDER" (SUBMIT) button to continue
 
-### 3. Karşılama Mesajı
-- "Memnun oldum [isim]!" mesajı
-- Animasyonlu geçiş
-- Otomatik harita görünümüne yönlendirme
+### 3. Welcome Message
+- "Memnun oldum [name]!" message
+- Animated transition
+- Automatic redirect to map view
 
-### 4. Öğrenme Haritası (Map View)
-- Sol sidebar navigasyon (ÖĞREN, GÖREVLER, ROZETLER)
-- Unit kartları (koyu mavi arka plan)
-- Seviye yolu görünümü
-- Tamamlanmış, aktif ve kilitli seviye durumları
+### 4. Learning Map (Map View)
+- Left sidebar navigation (ÖĞREN, GÖREVLER, ROZETLER)
+- Unit cards (dark blue background)
+- Learning path view
+- Completed, active, and locked level states
 
-### 5. Seviye Sayfası
-- Sol tarafta hikaye görseli
-- Sağ tarafta hikaye metni
-- TTS kontrol butonu (siyah, play ikonu)
-- Ses seviyesi ayarı
-- Soru ekranı
+### 5. Level Page
+- Story image on the left
+- Story text on the right
+- TTS control button (black, play icon)
+- Volume level adjustment
+- Question screen
 
-### 6. Görevler Ekranı
-- Günlük görevler (3 bölüm, 5 bölüm, 10 bölüm)
-- İlerleme çubukları (tamamlanan: yeşil, devam eden: siyah)
-- Sol sidebar navigasyon
+### 6. Quests Screen
+- Daily quests (3 levels, 5 levels, 10 levels)
+- Progress bars (completed: green, in progress: black)
+- Left sidebar navigation
 
-### 7. Rozetler Ekranı
-- Açılmış ve kilitli rozetler
-- Ünite tamamlama rozetleri
-- Koleksiyon görünümü
+### 7. Badges Screen
+- Unlocked and locked badges
+- Unit completion badges
+- Collection view
 
-## 🎨 Tasarım Özellikleri
+## 🎨 Design Features
 
-- **Renkler:**
-  - Koyu mavi (#1e3a5f) - Unit kartları
-  - Siyah (#000000) - Butonlar, aktif seviyeler
-  - Yeşil (#22c55e) - Tamamlanan görevler
-  - Beyaz arka plan - Ana tema
+- **Colors:**
+  - Dark blue (#1e3a5f) - Unit cards
+  - Black (#000000) - Buttons, active levels
+  - Green (#22c55e) - Completed quests
+  - White background - Main theme
 
 - **Typography:**
-  - Ana başlıklar: 56pt bold
-  - Alt başlıklar: 20pt regular
-  - Buton metinleri: Büyük harf, bold
+  - Main headings: 56pt bold
+  - Subheadings: 20pt regular
+  - Button text: Uppercase, bold
 
 - **Responsive:**
-  - Mobil ve tablet uyumlu
-  - Esnek layout yapısı
+  - Mobile and tablet compatible
+  - Flexible layout structure
 
-## 📦 Bağımlılıklar
+## 📦 Dependencies
 
-### Ana Bağımlılıklar
+### Main Dependencies
 - `react` ^18.2.0
 - `react-dom` ^18.2.0
 - `react-router-dom` ^6.20.0
 
-### Geliştirme Bağımlılıkları
+### Development Dependencies
 - `typescript` ^5.2.2
 - `vite` ^5.0.8
 - `@vitejs/plugin-react` ^4.2.1
 
-## 🔧 Yapılandırma
+## 🔧 Configuration
 
-### TTS Ayarları
-TTS ses seviyesi LocalStorage'da `sila_egitim_tts_volume` anahtarı ile saklanır.
+### TTS Settings
+TTS volume level is stored in LocalStorage with the key `sila_egitim_tts_volume`.
 
-### İlerleme Kaydı
-Tüm kullanıcı ilerlemesi LocalStorage'da saklanır:
-- `userName` - Kullanıcı ismi
-- `sila_egitim_progress` - Seviye ilerlemesi
-- `sila_egitim_daily_quests` - Günlük görev ilerlemesi
-- `sila_egitim_badges` - Rozet durumu
+### Progress Storage
+All user progress is stored in LocalStorage:
+- `userName` - User name
+- `sila_egitim_progress` - Level progress
+- `sila_egitim_daily_quests` - Daily quest progress
+- `sila_egitim_badges` - Badge status
 
-## 📝 Seviye Yapısı
+## 📝 Level Structure
 
-Her seviye şu bilgileri içerir:
-- `id` - Benzersiz seviye kimliği
-- `title` - Seviye başlığı
-- `description` - Seviye açıklaması
-- `order` - Sıralama (1'den başlar)
-- `category` - Ünite kategorisi
-- `unlocked` - Açık/kilitli durumu
-- `completed` - Tamamlanma durumu
+Each level contains the following information:
+- `id` - Unique level identifier
+- `title` - Level title
+- `description` - Level description
+- `order` - Ordering (starts from 1)
+- `category` - Unit category
+- `unlocked` - Unlocked/locked status
+- `completed` - Completion status
 
-## 🎯 Kullanım
+## 🎯 Usage
 
-1. **İlk Kullanım:**
-   - Hoş geldin ekranından "GET STARTED" butonuna tıklayın
-   - İsminizi girin ve "GÖNDER" butonuna basın
-   - Karşılama mesajından sonra otomatik olarak harita görünümüne yönlendirilirsiniz
+1. **First Use:**
+   - Click the "GET STARTED" button from the welcome screen
+   - Enter your name and press the "GÖNDER" button
+   - After the welcome message, you will be automatically redirected to the map view
 
-2. **Seviye Oynama:**
-   - Harita görünümünde bir seviyeye tıklayın
-   - Hikayeyi dinleyin (TTS butonu ile)
-   - Soruları cevaplayın
-   - Seviye tamamlandığında bir sonraki seviye açılır
+2. **Playing Levels:**
+   - Click on a level in the map view
+   - Listen to the story (with TTS button)
+   - Answer the questions
+   - When a level is completed, the next level unlocks
 
-3. **Görevler:**
-   - Sol sidebar'dan "GÖREVLER" sekmesine tıklayın
-   - Günlük hedeflerinizi görün
-   - Tamamlanan görevler yeşil çubukla gösterilir
+3. **Quests:**
+   - Click on the "GÖREVLER" tab from the left sidebar
+   - View your daily goals
+   - Completed quests are shown with a green bar
 
-4. **Rozetler:**
-   - Sol sidebar'dan "ROZETLER" sekmesine tıklayın
-   - Kazandığınız rozetleri görün
-   - Ünite tamamlama rozetleri otomatik olarak açılır
+4. **Badges:**
+   - Click on the "ROZETLER" tab from the left sidebar
+   - View your earned badges
+   - Unit completion badges unlock automatically
 
-## 🛠️ Geliştirme
+## 🛠️ Development
 
-### Yeni Seviye Ekleme
+### Adding a New Level
 
-1. `src/data/levels.ts` dosyasına yeni seviye ekleyin
-2. `src/data/levelContent.ts` dosyasına seviye içeriği ve sorularını ekleyin
-3. Görsel dosyalarını `public/assets/` klasörüne ekleyin (orderX.webp veya orderX.png)
+1. Add a new level to `src/data/levels.ts`
+2. Add level content and questions to `src/data/levelContent.ts`
+3. Add image files to `public/assets/` folder (orderX.webp or orderX.png)
 
-### Yeni Rozet Ekleme
+### Adding a New Badge
 
-1. `src/utils/badges.ts` dosyasında rozet tanımlarını güncelleyin
-2. Rozet görsellerini `public/assets/` klasörüne ekleyin
+1. Update badge definitions in `src/utils/badges.ts`
+2. Add badge images to `public/assets/` folder
 
-## 📄 Lisans
+## 📄 License
 
 MIT
 
-## 👤 Geliştirici
+## 👤 Developer
 
 Murathan
 
-## 🤝 Katkıda Bulunma
+## 🤝 Contributing
 
-Katkılarınızı bekliyoruz! Lütfen pull request göndermeden önce:
-1. Projeyi fork edin
-2. Feature branch oluşturun (`git checkout -b feature/amazing-feature`)
-3. Değişikliklerinizi commit edin (`git commit -m 'Add amazing feature'`)
-4. Branch'inizi push edin (`git push origin feature/amazing-feature`)
-5. Pull Request açın
+We welcome your contributions! Before sending a pull request, please:
+1. Fork the project
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
