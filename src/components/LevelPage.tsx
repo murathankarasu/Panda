@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { levelContent } from '../data/levelContent';
-import { Question } from '../types';
-import { levels } from '../data/levels';
+import { Question, LevelContent, Level } from '../types';
+import { levels as localLevels } from '../data/levels';
 import { updateLevelProgress, unlockNextLevel } from '../utils/progress';
 import { incrementLevelCompletedToday } from '../utils/dailyQuests';
 import { speakText, stopSpeaking, getTTSVolume, setTTSVolume, isSpeaking } from '../utils/tts';
+import { firebaseService } from '../services/firebaseService';
 import './LevelPage.css';
 import CelebrationLevel from './levels/CelebrationLevel';
 
@@ -21,29 +21,45 @@ export default function LevelPage() {
   const [correctCount, setCorrectCount] = useState(0);
   const [ttsVolume, setTtsVolume] = useState(getTTSVolume());
   const [isPlaying, setIsPlaying] = useState(false);
-
-  const level = levels.find(l => l.id === levelId);
-  const content = levelContent[levelId || ''];
+  const [content, setContent] = useState<LevelContent | null>(null);
+  const [level, setLevel] = useState<Level | undefined>(
+    localLevels.find(l => l.id === levelId)
+  );
 
   useEffect(() => {
+    const loadData = async () => {
+      if (!levelId) return;
+
+      try {
+        // Fetch content
+        const contentData = await firebaseService.getLevelContent(levelId);
+        if (contentData) {
+          setContent(contentData);
+        }
+
+        // Fetch latest level info (optional but good for title updates)
+        const allLevels = await firebaseService.getLevels();
+        const currentLevel = allLevels.find(l => l.id === levelId);
+        if (currentLevel) {
+          setLevel(currentLevel);
+        }
+      } catch (error) {
+        console.error('Error loading level data:', error);
+      }
+    };
+
+    loadData();
+    
     return () => {
       stopSpeaking();
     };
-  }, []);
+  }, [levelId]);
 
   const celebrationIds = new Set([
     'milli-29-ekim',
     'milli-23-nisan',
     'milli-19-mayis',
-    'milli-30-agustos',
-    'dini-ramazan',
-    'dini-kurban',
-    'kandil-mevlid',
-    'kandil-regaip',
-    'kandil-mirac',
-    'kandil-berat',
-    'gunler-kadir',
-    'gunler-asure',
+    'milli-30-agustos'
   ]);
 
   if (level && celebrationIds.has(level.id)) {

@@ -1,6 +1,10 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Level } from '../types';
 import { getLevelProgress } from '../utils/progress';
+import { firebaseService } from '../services/firebaseService';
+import { auth } from '../firebase';
+import { signOut } from 'firebase/auth';
 import './MapView.css';
 
 interface MapViewProps {
@@ -9,6 +13,25 @@ interface MapViewProps {
 
 export default function MapView({ levels }: MapViewProps) {
   const navigate = useNavigate();
+  const [userName, setUserName] = useState('');
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+
+  useEffect(() => {
+    const name = localStorage.getItem('userName') || 'Öğrenci';
+    setUserName(name);
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      localStorage.removeItem('userName');
+      localStorage.removeItem('sila_egitim_userid');
+      navigate('/');
+    } catch (error) {
+      console.error('Çıkış hatası:', error);
+    }
+  };
+
   const sortedLevels = [...levels].sort((a, b) => a.order - b.order);
 
   // Group levels by category (Units)
@@ -19,6 +42,7 @@ export default function MapView({ levels }: MapViewProps) {
     acc[level.category].push(level);
     return acc;
   }, {} as Record<string, Level[]>);
+  
   const sortedByCategory = Object.keys(levelsByCategory).reduce((acc, category) => {
     acc[category] = levelsByCategory[category].slice().sort((a, b) => a.order - b.order);
     return acc;
@@ -39,7 +63,6 @@ export default function MapView({ levels }: MapViewProps) {
     }
   };
 
-  // Check if level can be unlocked (previous level completed)
   const canUnlock = (level: Level): boolean => {
     const categoryLevels = sortedByCategory[level.category] || [];
     const levelIndex = categoryLevels.findIndex(l => l.id === level.id);
@@ -54,7 +77,6 @@ export default function MapView({ levels }: MapViewProps) {
     return Boolean(prevProgress?.completed || prevCategoryLevel.completed);
   };
 
-  // Get next unlocked and not completed level
   const getNextUnlockedLevel = (): Level | null => {
     for (const level of sortedLevels) {
       const unlocked = canUnlock(level);
@@ -69,7 +91,6 @@ export default function MapView({ levels }: MapViewProps) {
     return null;
   };
 
-  // Update level unlock status based on previous completion
   const getLevelStatus = (
     level: Level
   ): { unlocked: boolean; completed: boolean; isCurrent: boolean } => {
@@ -86,142 +107,93 @@ export default function MapView({ levels }: MapViewProps) {
 
   return (
     <div className="map-view">
-      {/* Left Sidebar */}
-      <div className="left-sidebar">
-        <div className="sidebar-logo">
-          <img 
-            src="/assets/logo.png" 
-            alt="Logo" 
-            className="sidebar-logo-image"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.style.display = 'none';
-              const fallback = target.parentElement?.querySelector('.sidebar-logo-fallback') as HTMLElement;
-              if (fallback) fallback.style.display = 'flex';
-            }}
-          />
-          <div className="sidebar-logo-fallback" style={{ display: 'none' }}>🐼</div>
+      {/* Sidebar */}
+      <aside className="sidebar">
+        <div className="sidebar-header">
+          <div className="logo-text">
+            <span className="logo-rainbow">Özel</span>
+            <span className="logo-white">Öğren</span>
+          </div>
         </div>
         
         <nav className="sidebar-nav">
-          <div 
-            className="nav-item active" 
-            onClick={() => navigate('/map')}
-          >
-            <span className="nav-icon">🏠</span>
-            <span className="nav-text">ÖĞREN</span>
-          </div>
-          <div 
-            className="nav-item" 
-            onClick={() => navigate('/quests')}
-          >
+          <button className="nav-item active" onClick={() => navigate('/map')}>
+            <span className="nav-icon">🗺️</span>
+            <span>Harita</span>
+          </button>
+          <button className="nav-item" onClick={() => navigate('/quests')}>
             <span className="nav-icon">🎯</span>
-            <span className="nav-text">GÖREVLER</span>
-          </div>
-          <div 
-            className="nav-item" 
-            onClick={() => navigate('/badges')}
-          >
+            <span>Görevler</span>
+          </button>
+          <button className="nav-item" onClick={() => navigate('/badges')}>
             <span className="nav-icon">🏆</span>
-            <span className="nav-text">ROZETLER</span>
-          </div>
-          <div 
-            className="nav-item" 
-            onClick={() => navigate('/admin')}
-          >
-            <span className="nav-icon">🛠️</span>
-            <span className="nav-text">YÖNETİM</span>
-          </div>
+            <span>Rozetler</span>
+          </button>
         </nav>
-      </div>
 
-      {/* Main Content Area */}
-      <div className="main-content-area">
-        {/* Top Header */}
-        <div className="content-header">
-          <div className="header-summary">
-            <h1 className="header-primary-title">Bayram Macerası</h1>
-            <p className="header-caption">
-              {completedCount} / {totalLevels} bölüm tamamlandı · %{completionRate}
+        <div className="sidebar-footer">
+          <div className="user-profile" onClick={() => setShowProfileMenu(!showProfileMenu)}>
+            <div className="avatar-circle">
+              {userName.charAt(0).toUpperCase()}
+            </div>
+            <div className="user-info">
+              <span className="user-name">{userName}</span>
+              <span className="user-level">Seviye {Math.floor(completedCount / 5) + 1}</span>
+            </div>
+            {showProfileMenu && (
+              <div className="profile-menu">
+                <button onClick={handleLogout} className="logout-btn">
+                  Çıkış Yap
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </aside>
+
+      {/* Main Content */}
+      <main className="map-content">
+        <header className="map-header">
+          <div>
+            <h1>Maceraya Devam Et</h1>
+            <p className="progress-text">
+              {completedCount}/{totalLevels} bölüm tamamlandı • %{completionRate}
             </p>
           </div>
           {nextLevel && (
-            <button
-              className="header-next-button"
-              onClick={() => handleLevelClick(nextLevel)}
-            >
-              <span className="next-label">Sıradaki bölüm</span>
-              <span className="next-title">{nextLevel.title}</span>
+            <button className="continue-btn" onClick={() => handleLevelClick(nextLevel)}>
+              <span>Sıradaki: {nextLevel.title}</span>
+              <span className="btn-arrow">→</span>
             </button>
           )}
-        </div>
+        </header>
 
-        {/* Units and Levels */}
-        <div className="units-container">
+        <div className="levels-container">
           {categories.map(category => {
             const categoryLevels = sortedByCategory[category] || [];
-
             return (
               <div key={category} className="unit-section">
-                {/* Unit Card */}
-                <div className="unit-card">
-                  <div className="unit-info">
-                    <h2 className="unit-title">{category}</h2>
-                    {categoryLevels.length > 0 && (
-                      <p className="unit-description">
-                        Yolculukta {categoryLevels.length} bölüm seni bekliyor.
-                      </p>
-                    )}
-                  </div>
-                  {categoryLevels.some(l => {
-                    const status = getLevelStatus(l);
-                    return status.unlocked && !status.completed;
-                  }) && (
-                    <button 
-                      className="unit-continue-button"
-                      onClick={() => {
-                        const nextLevel = categoryLevels.find(l => {
-                          const status = getLevelStatus(l);
-                          return status.unlocked && !status.completed;
-                        });
-                        if (nextLevel) {
-                          handleLevelClick(nextLevel);
-                        }
-                      }}
-                    >
-                      <span className="continue-icon">📖</span>
-                      DEVAM ET
-                    </button>
-                  )}
+                <div className="unit-header">
+                  <h2>{category}</h2>
+                  <span className="unit-count">{categoryLevels.length} Bölüm</span>
                 </div>
-
-                {/* Levels Grid */}
+                
                 <div className="levels-grid">
                   {categoryLevels.map((level, index) => {
                     const status = getLevelStatus(level);
-
                     return (
                       <button
                         key={level.id}
-                        className={`level-card ${
-                          status.completed
-                            ? 'completed'
-                            : status.unlocked
-                            ? 'active'
-                            : 'locked'
-                        }`}
+                        className={`level-node ${status.completed ? 'completed' : ''} ${status.isCurrent ? 'current' : ''} ${!status.unlocked ? 'locked' : ''}`}
                         onClick={() => status.unlocked && handleLevelClick(level)}
                         disabled={!status.unlocked}
                       >
-                        <div className="level-card-header">
-                          <div className="level-index">
-                            {status.completed ? '✓' : index + 1}
-                          </div>
-                          {status.isCurrent && <span className="level-badge">SIRADAKİ</span>}
+                        <div className="node-content">
+                          {status.completed ? '✓' : status.unlocked ? index + 1 : '🔒'}
                         </div>
-                        <div className="level-card-body">
-                          <h3 className="level-card-title">{level.title}</h3>
-                          <p className="level-card-text">{level.description}</p>
+                        <div className="level-info">
+                          <h3>{level.title}</h3>
+                          <p>{level.description}</p>
                         </div>
                       </button>
                     );
@@ -231,8 +203,7 @@ export default function MapView({ levels }: MapViewProps) {
             );
           })}
         </div>
-      </div>
-
+      </main>
     </div>
   );
 }

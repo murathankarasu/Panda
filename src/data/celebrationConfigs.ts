@@ -12,6 +12,11 @@ export const baseCelebrationConfigs: CelebrationConfigMap = {
       'Bayrağını hazırla, birlikte sallayın.',
       'Kutlama için “Hazırım” dediğinde başlıyoruz!'
     ],
+    stepTitles: [
+      'Hazırlık', 'Kelime Oyunu', 'Simgeleri Eşleştir', 'Hafıza Oyunu',
+      'Boyama', 'Gölge Eşleştirme', 'Kategorileştirme', 'Kutlama İnşası',
+      'Ritim', 'Günü Sırala', 'Farkı Bul', 'Mini Test', 'Kutlama'
+    ],
     wordGame: {
       prompt: 'Cumhuriyetimizin adını harfleri doğru sıraya dizerek tamamla.',
       answer: 'CUMHURIYET',
@@ -43,6 +48,31 @@ export const baseCelebrationConfigs: CelebrationConfigMap = {
         ['red', 'red', 'red'],
       ],
       hint: 'Ortadaki kareyi beyaz bırak, diğer kareleri kırmızıya boya.',
+    },
+    silhouetteGame: [
+      { id: 'ataturk', icon: '👤', label: 'Atatürk', color: '#2D2D2D' },
+      { id: 'flag', icon: '🚩', label: 'Bayrak', color: '#ef4444' },
+      { id: 'map', icon: '🗺️', label: 'Türkiye', color: '#54A0FF' },
+    ],
+    sortingGame: {
+      categories: [
+        { id: 'left', label: 'Bayramda Yaparız', icon: '🎉', color: '#1DD1A1' },
+        { id: 'right', label: 'Sıradan Gün', icon: '🏠', color: '#FF6B6B' },
+      ],
+      items: [
+        { id: 's1', label: 'Bayrak Asmak', icon: '🚩', category: 'left' },
+        { id: 's2', label: 'Erken Uyumak', icon: '😴', category: 'right' },
+        { id: 's3', label: 'Şiir Okumak', icon: '🎤', category: 'left' },
+        { id: 's4', label: 'Televizyon İzlemek', icon: '📺', category: 'right' },
+      ],
+    },
+    oddOneOutGame: {
+      items: [
+        { id: 'o1', icon: '🇹🇷', isOdd: false },
+        { id: 'o2', icon: '🇹🇷', isOdd: false },
+        { id: 'o3', icon: '🇹🇷', isOdd: false },
+        { id: 'o4', icon: '🍕', isOdd: true },
+      ]
     },
     puzzlePieces: [
       { id: 'fabric', label: 'Kırmızı Kumaş', icon: '🟥', color: '#dc2626' },
@@ -78,6 +108,11 @@ export const baseCelebrationConfigs: CelebrationConfigMap = {
       'Sınıfını veya evini balonlarla hayal et.',
       'Ailenle birlikte bayrağını hazırlamayı unutma.'
     ],
+    stepTitles: [
+      'Hazırlık', 'Kelime Oyunu', 'Simgeleri Eşleştir', 'Hafıza Oyunu',
+      'Boyama', 'Gölge Eşleştirme', 'Kategorileştirme', 'Kutlama İnşası',
+      'Ritim', 'Günü Sırala', 'Farkı Bul', 'Mini Test', 'Kutlama'
+    ],
     wordGame: {
       prompt: 'Bayramın adını harfleri sıraya dizerek yaz.',
       answer: 'EGEMENLIK',
@@ -110,6 +145,31 @@ export const baseCelebrationConfigs: CelebrationConfigMap = {
         ['red', 'white', 'red'],
       ],
       hint: 'Ortada mavi çizgi kalsın; kenarlarda kırmızı beyaz bayrak çerçevesi olsun.',
+    },
+    silhouetteGame: [
+      { id: 'world', icon: '🌍', label: 'Dünya', color: '#3b82f6' },
+      { id: 'kite', icon: '🪁', label: 'Uçurtma', color: '#f59e0b' },
+      { id: 'child', icon: '👧', label: 'Çocuk', color: '#ec4899' },
+    ],
+    sortingGame: {
+      categories: [
+        { id: 'left', label: 'Çocukların', icon: '🎈', color: '#54A0FF' },
+        { id: 'right', label: 'Yetişkinlerin', icon: '👔', color: '#95a5a6' },
+      ],
+      items: [
+        { id: 's1', label: 'Oyuncak', icon: '🧸', category: 'left' },
+        { id: 's2', label: 'Kravat', icon: '👔', category: 'right' },
+        { id: 's3', label: 'Balon', icon: '🎈', category: 'left' },
+        { id: 's4', label: 'Evrak Çantası', icon: '💼', category: 'right' },
+      ],
+    },
+    oddOneOutGame: {
+      items: [
+        { id: 'o1', icon: '🎈', isOdd: false },
+        { id: 'o2', icon: '🎈', isOdd: false },
+        { id: 'o3', icon: '🎈', isOdd: false },
+        { id: 'o4', icon: '🌵', isOdd: true },
+      ]
     },
     puzzlePieces: [
       { id: 'stage', label: 'Şenlik Sahnesi', icon: '🎪', color: '#fb923c' },
@@ -145,6 +205,11 @@ export const baseCelebrationConfigs: CelebrationConfigMap = {
       'Spor yaparken hangi hareketleri sevdiğini paylaş.',
       'Akşam yapılacak fener alayını hayal et.'
     ],
+    stepTitles: [
+      'Hazırlık', 'Kelime Oyunu', 'Simgeleri Eşleştir', 'Hafıza Oyunu',
+      'Boyama', 'Gölge Eşleştirme', 'Kategorileştirme', 'Kutlama İnşası',
+      'Ritim', 'Günü Sırala', 'Farkı Bul', 'Mini Test', 'Kutlama'
+    ],
     wordGame: {
       prompt: 'Gençliğe armağan edilen bu günün adını tamamla.',
       answer: 'GENCLIK',
@@ -177,6 +242,31 @@ export const baseCelebrationConfigs: CelebrationConfigMap = {
         ['blue', 'white', 'blue'],
       ],
       hint: 'Ortada turuncu ateş, etrafında mavi-beyaz halkalar oluştur.',
+    },
+    silhouetteGame: [
+      { id: 'ship', icon: '⛴️', label: 'Gemi', color: '#1d4ed8' },
+      { id: 'torch', icon: '🔥', label: 'Meşale', color: '#f97316' },
+      { id: 'ball', icon: '🏀', label: 'Top', color: '#ea580c' },
+    ],
+    sortingGame: {
+      categories: [
+        { id: 'left', label: 'Spor İçin', icon: '🏃', color: '#10b981' },
+        { id: 'right', label: 'Uyku İçin', icon: '🛌', color: '#6366f1' },
+      ],
+      items: [
+        { id: 's1', label: 'Spor Ayakkabı', icon: '👟', category: 'left' },
+        { id: 's2', label: 'Yastık', icon: '🛌', category: 'right' },
+        { id: 's3', label: 'Eşofman', icon: '👕', category: 'left' },
+        { id: 's4', label: 'Battaniye', icon: '🛏️', category: 'right' },
+      ],
+    },
+    oddOneOutGame: {
+      items: [
+        { id: 'o1', icon: '⚽', isOdd: false },
+        { id: 'o2', icon: '⚽', isOdd: false },
+        { id: 'o3', icon: '⚽', isOdd: false },
+        { id: 'o4', icon: '🍔', isOdd: true },
+      ]
     },
     puzzlePieces: [
       { id: 'ship', label: 'Bandırma Gemisi', icon: '🚢', color: '#1d4ed8' },
@@ -212,6 +302,11 @@ export const baseCelebrationConfigs: CelebrationConfigMap = {
       'Şehitlerimizi anmak için kısa bir sessizlik yap.',
       'Akşam yapılacak kutlamaları hayal et.'
     ],
+    stepTitles: [
+      'Hazırlık', 'Kelime Oyunu', 'Simgeleri Eşleştir', 'Hafıza Oyunu',
+      'Boyama', 'Gölge Eşleştirme', 'Kategorileştirme', 'Kutlama İnşası',
+      'Ritim', 'Günü Sırala', 'Farkı Bul', 'Mini Test', 'Kutlama'
+    ],
     wordGame: {
       prompt: 'Bu büyük zaferin adını harflerle tamamla.',
       answer: 'ZAFER',
@@ -245,6 +340,31 @@ export const baseCelebrationConfigs: CelebrationConfigMap = {
       ],
       hint: 'Ortadaki beyaz ışığı altın çerçeveyle, dışını kırmızıyla tamamla.',
     },
+    silhouetteGame: [
+      { id: 'medal', icon: '🏅', label: 'Madalya', color: '#f59e0b' },
+      { id: 'soldier', icon: '🪖', label: 'Asker', color: '#15803d' },
+      { id: 'star', icon: '⭐', label: 'Yıldız', color: '#facc15' },
+    ],
+    sortingGame: {
+      categories: [
+        { id: 'left', label: 'Zafer İçin', icon: '🏆', color: '#f59e0b' },
+        { id: 'right', label: 'Yemek İçin', icon: '🍔', color: '#ef4444' },
+      ],
+      items: [
+        { id: 's1', label: 'Madalya', icon: '🏅', category: 'left' },
+        { id: 's2', label: 'Hamburger', icon: '🍔', category: 'right' },
+        { id: 's3', label: 'Kupa', icon: '🏆', category: 'left' },
+        { id: 's4', label: 'Pizza', icon: '🍕', category: 'right' },
+      ],
+    },
+    oddOneOutGame: {
+      items: [
+        { id: 'o1', icon: '🏅', isOdd: false },
+        { id: 'o2', icon: '🏅', isOdd: false },
+        { id: 'o3', icon: '🏅', isOdd: false },
+        { id: 'o4', icon: '🧸', isOdd: true },
+      ]
+    },
     puzzlePieces: [
       { id: 'platform', label: 'Zafer Platformu', icon: '🏛️', color: '#b91c1c' },
       { id: 'hero', label: 'Komutan Heykeli', icon: '🪖', color: '#f97316' },
@@ -269,590 +389,6 @@ export const baseCelebrationConfigs: CelebrationConfigMap = {
       correctIndex: 0,
     },
     completionMessage: 'Zafer coşkusunu yüreğinde hissettin, tebrikler!'
-  },
-  'dini-ramazan': {
-    intro:
-      'Ramazan Bayramı paylaşma ve sevinç zamanıdır. Oruçtan sonra kalplerimizi iyilikle doldururuz.',
-    videoId: 'imkRtNN_0Bw',
-    prepHints: [
-      'Videodaki ilahiyi dinle, ritmiyle elini hafifçe vur.',
-      'İftar sofrasında neler olacağını hayal et.',
-      'Bayramlaşma için “Hazırım” de ve başlayalım.'
-    ],
-    stepTitles: [
-      'Hazırlık',
-      'Kelime Hazinesi',
-      'Değerleri Eşleştir',
-      'Anımsama Kartları',
-      'Deseni Boya',
-      'Bayram Sofrası',
-      'Ritimli Bayramlaşma',
-      'Günü Planla',
-      'Mini Test',
-      'Bayramlaşma'
-    ],
-    wordGame: {
-      prompt: 'Bayramın adını harfleri doğru sıraya dizerek tamamla.',
-      answer: 'RAMAZAN',
-      letterPool: ['R', 'A', 'M', 'A', 'Z', 'A', 'N', 'L', 'I', 'K', 'E', 'Ş']
-    },
-    matchItems: [
-      { id: 'sahur', label: 'Sahur Vakti', badge: '🌙' },
-      { id: 'iftar', label: 'İftar Sofrası', badge: '🍽️' },
-      { id: 'fitre', label: 'Fitre Paylaşımı', badge: '🎁' }
-    ],
-    matchTargets: [
-      { id: 'gece', prompt: 'Gece erken kalkıp yapılan hazırlık', answer: 'sahur' },
-      { id: 'aksam', prompt: 'Günün sonunda paylaşılan soframız', answer: 'iftar' },
-      { id: 'yardim', prompt: 'İhtiyaç sahiplerine verilen armağan', answer: 'fitre' }
-    ],
-    memoryPairs: [
-      { id: 'lantern', icon: '🕯️', label: 'Fener' },
-      { id: 'mescid', icon: '🕌', label: 'Mescid' },
-      { id: 'misvak', icon: '🌿', label: 'Misvak' }
-    ],
-    colorGrid: {
-      palette: [
-        { id: 'green', label: 'Yeşil', color: '#15803d' },
-        { id: 'gold', label: 'Altın', color: '#f59e0b' },
-        { id: 'cream', label: 'Krem', color: '#f5f5dc' }
-      ],
-      target: [
-        ['green', 'gold', 'green'],
-        ['gold', 'cream', 'gold'],
-        ['green', 'gold', 'green']
-      ],
-      hint: 'Yeşil hilali çerçevele, ortasında krem ışık ve altın süsler olsun.'
-    },
-    puzzlePieces: [
-      { id: 'table', label: 'İftar Sofrası', icon: '🍽️', color: '#a855f7' },
-      { id: 'lantern', label: 'Ramazan Feneri', icon: '🕯️', color: '#f97316' },
-      { id: 'dates', label: 'Hurma Tabağı', icon: '🌰', color: '#b45309' },
-      { id: 'gift', label: 'Şeker Kutusu', icon: '🍬', color: '#facc15' }
-    ],
-    puzzleHint: 'Sofrayı kur, feneri yak, hurmaları yerleştir ve şeker kutusunu hazırla.',
-    rhythmActions: [
-      { id: 'takbir', label: 'Tekbiri söyle', icon: '🕌' },
-      { id: 'lantern', label: 'Fener yak', icon: '🕯️' },
-      { id: 'share', label: 'İkram et', icon: '🍬' }
-    ],
-    rhythmSequence: ['takbir', 'lantern', 'share', 'takbir'],
-    timeline: [
-      { id: 'sahur', label: 'Sahurda uyanırız.' },
-      { id: 'namaz', label: 'Bayram namazını kılar, dua ederiz.' },
-      { id: 'ziyaret', label: 'Aile ziyaretleriyle bayramlaşırız.' }
-    ],
-    quiz: {
-      question: 'Ramazan Bayramı sabahı ilk yaptığımız şey nedir?',
-      options: ['Bayram namazına gitmek', 'Gece oyun oynamak', 'Uyuyakalmak'],
-      correctIndex: 0
-    },
-    completionMessage: 'Ramazan Bayramı paylaşımını harika anlattın!'
-  },
-  'dini-kurban': {
-    intro:
-      'Kurban Bayramı paylaşmanın ve yardımlaşmanın bayramıdır. Kurban eti dostlarla ve ihtiyaç sahipleriyle paylaşılır.',
-    videoId: 'Sj31ud_iWjk',
-    prepHints: [
-      'Videodaki marşı ritimle dinle.',
-      'Bayram sabahı camideki tekbirleri hayal et.',
-      'Paylaşacağın nimetleri düşün ve “Hazırım” de.'
-    ],
-    stepTitles: [
-      'Hazırlık',
-      'Kelime Hazinesi',
-      'Paylaşımı Eşleştir',
-      'Hafıza Kartları',
-      'Deseni Boya',
-      'Bayram Sofrası',
-      'Ritimli Tekbir',
-      'Günü Planla',
-      'Mini Test',
-      'Bayramlaşma'
-    ],
-    wordGame: {
-      prompt: 'Bayramın adını harfleri sıralayarak tamamla.',
-      answer: 'KURBAN',
-      letterPool: ['K', 'U', 'R', 'B', 'A', 'N', 'E', 'T', 'İ', 'S', 'L', 'M']
-    },
-    matchItems: [
-      { id: 'namaz', label: 'Bayram Namazı', badge: '🕌' },
-      { id: 'paylas', label: 'Kurban Paylaşımı', badge: '🎁' },
-      { id: 'takbir', label: 'Tekbir Getirmek', badge: '📿' }
-    ],
-    matchTargets: [
-      { id: 'sabah', prompt: 'Bayram sabahı ilk yapılır', answer: 'namaz' },
-      { id: 'duygu', prompt: 'Allah’a şükür niyetiyle söylenen söz', answer: 'takbir' },
-      { id: 'yardim', prompt: 'Etleri paylaştığımız güzel davranış', answer: 'paylas' }
-    ],
-    memoryPairs: [
-      { id: 'sheep', icon: '🐑', label: 'Koyun' },
-      { id: 'salt', icon: '🧂', label: 'Hazırlık Baharatı' },
-      { id: 'caldron', icon: '🍲', label: 'Kavurma Tenceresi' }
-    ],
-    colorGrid: {
-      palette: [
-        { id: 'green', label: 'Yeşil', color: '#166534' },
-        { id: 'brown', label: 'Kahverengi', color: '#92400e' },
-        { id: 'white', label: 'Beyaz', color: '#ffffff' }
-      ],
-      target: [
-        ['green', 'white', 'green'],
-        ['white', 'brown', 'white'],
-        ['green', 'white', 'green']
-      ],
-      hint: 'Yeşil alanı çevrele, ortasına beyaz yol ve kahverengi paylaşım kazanı yerleştir.'
-    },
-    puzzlePieces: [
-      { id: 'field', label: 'Bayram Alanı', icon: '🌾', color: '#16a34a' },
-      { id: 'cami', label: 'Cami Avlusu', icon: '🕌', color: '#2563eb' },
-      { id: 'basket', label: 'Paylaşım Sepeti', icon: '🧺', color: '#d97706' },
-      { id: 'stew', label: 'Kavurma Kazanı', icon: '🍲', color: '#a16207' }
-    ],
-    puzzleHint: 'Önce alanı kur, camiyi yerleştir, paylaşım sepetini hazırla ve kavurma kazanıyla tamamla.',
-    rhythmActions: [
-      { id: 'takbir', label: 'Tekbir söyle', icon: '📿' },
-      { id: 'share', label: 'Et paylaştır', icon: '🧺' },
-      { id: 'gratitude', label: 'Şükret', icon: '🌟' }
-    ],
-    rhythmSequence: ['takbir', 'share', 'takbir', 'gratitude'],
-    timeline: [
-      { id: 'namaz', label: 'Sabah bayram namazına gideriz.' },
-      { id: 'kurban', label: 'Kurbanımızı keser ve paylaşırız.' },
-      { id: 'ziyaret', label: 'Komşularla bayramlaşır, ikram ederiz.' }
-    ],
-    quiz: {
-      question: 'Kurban Bayramı’nda etleri ne yaparız?',
-      options: ['Paylaşırız', 'Saklarız', 'Atarız'],
-      correctIndex: 0
-    },
-    completionMessage: 'Kurban Bayramı’nın paylaşım ruhunu çok güzel anlattın!'
-  },
-  'kandil-mevlid': {
-    intro:
-      'Mevlid Kandili, Peygamberimizin doğumunu hatırladığımız, sevgi ve paylaşmanın arttığı özel bir gecedir.',
-    videoId: 'imkRtNN_0Bw',
-    prepHints: [
-      'Sakin bir müzik açıp mum ışığını hayal et.',
-      'Ailenle birlikte “Hoş geldin ya Resul” demeye hazırlan.',
-      'Ziyaret edeceğin kişileri düşün ve bir dua seç.'
-    ],
-    stepTitles: [
-      'Hazırlık',
-      'Kelime Hazinesi',
-      'Değerleri Eşleştir',
-      'Anımsama Kartları',
-      'Işık Deseni',
-      'Kandil Sofrası',
-      'Ritimli Dua',
-      'Günü Planla',
-      'Mini Test',
-      'Kandil Sevinci'
-    ],
-    wordGame: {
-      prompt: 'Kandilimizin adını harfleri sırala.',
-      answer: 'MEVLID',
-      letterPool: ['M', 'E', 'V', 'L', 'I', 'D', 'A', 'K', 'N', 'S', 'R', 'O']
-    },
-    matchItems: [
-      { id: 'mevlid', label: 'Mevlid Kandili', badge: '🕌' },
-      { id: 'dua', label: 'Dua Etmek', badge: '📿' },
-      { id: 'simid', label: 'Kandil Simidi', badge: '🍪' }
-    ],
-    matchTargets: [
-      { id: 'gece', prompt: 'Peygamberimizin doğumunu hatırladığımız gece', answer: 'mevlid' },
-      { id: 'ibadet', prompt: 'Kalpten söylenen güzel sözler', answer: 'dua' },
-      { id: 'ikram', prompt: 'Komşulara paylaşılan tatlı', answer: 'simid' }
-    ],
-    memoryPairs: [
-      { id: 'lantern', icon: '🕯️', label: 'Mum Işığı' },
-      { id: 'book', icon: '📖', label: 'Mevlid Kitabı' },
-      { id: 'rose', icon: '🌹', label: 'Gül Kokusu' }
-    ],
-    colorGrid: {
-      palette: [
-        { id: 'navy', label: 'Gece Mavisi', color: '#1e3a8a' },
-        { id: 'gold', label: 'Altın', color: '#f59e0b' },
-        { id: 'cream', label: 'Krem', color: '#f5f5dc' }
-      ],
-      target: [
-        ['navy', 'gold', 'navy'],
-        ['gold', 'cream', 'gold'],
-        ['navy', 'gold', 'navy']
-      ],
-      hint: 'Gece mavisini çerçeve yap, ortada krem ışık ve altın parıltılar bırak.'
-    },
-    puzzlePieces: [
-      { id: 'mosque', label: 'Mescid Silueti', icon: '🕌', color: '#1d4ed8' },
-      { id: 'lantern', label: 'Kandil Feneri', icon: '🕯️', color: '#f97316' },
-      { id: 'plate', label: 'Simid Tabağı', icon: '🍪', color: '#d97706' },
-      { id: 'letter', label: 'Dua Zarfı', icon: '✉️', color: '#0ea5e9' }
-    ],
-    puzzleHint: 'Önce mescidi çiz, kandil fenerini as, simit tabağını yerleştir ve dua zarfını ekle.',
-    rhythmActions: [
-      { id: 'takbir', label: 'Tekbir getir', icon: '📿' },
-      { id: 'lantern', label: 'Feneri yak', icon: '🕯️' },
-      { id: 'salawat', label: 'Salavat getir', icon: '🌟' }
-    ],
-    rhythmSequence: ['takbir', 'lantern', 'salawat', 'takbir'],
-    timeline: [
-      { id: 'hazirlik', label: 'Akşam kandil simidi hazırlanır.' },
-      { id: 'dua', label: 'Gece dua edilir, salavat getirilir.' },
-      { id: 'ziyaret', label: 'Komşulara kandil simidi ikram edilir.' }
-    ],
-    quiz: {
-      question: 'Mevlid Kandili’nde neyi hatırlarız?',
-      options: ['Peygamberimizin doğumunu', 'Sadece tatili', 'Yaz tatilini'],
-      correctIndex: 0
-    },
-    completionMessage: 'Mevlid Kandili’nin sevgisini kalbinde taşıdın, ne güzel!'
-  },
-  'kandil-regaip': {
-    intro:
-      'Regaip Kandili rahmet ve bereket gecesidir. Dualarla ve paylaşmayla kalbimizi güzelleştiririz.',
-    videoId: 'imkRtNN_0Bw',
-    prepHints: [
-      'Bereketi simgeleyen buğday tanelerini düşün.',
-      'Bir dileğini güzelce dile getirmeyi planla.',
-      'Sevdiklerine göndereceğin mesajı hazırlayalım.'
-    ],
-    wordGame: {
-      prompt: 'Bereket gecesinin adını tamamla.',
-      answer: 'REGAIP',
-      letterPool: ['R', 'E', 'G', 'A', 'I', 'P', 'B', 'K', 'L', 'S', 'N', 'U']
-    },
-    matchItems: [
-      { id: 'regaip', label: 'Regaip Kandili', badge: '🌙' },
-      { id: 'tesbih', label: 'Tesbih', badge: '📿' },
-      { id: 'ikram', label: 'Tatlı Paylaşımı', badge: '🍯' }
-    ],
-    matchTargets: [
-      { id: 'gece', prompt: 'Üç ayların ilk kandili', answer: 'regaip' },
-      { id: 'zikir', prompt: 'Dualarda parmaklarımızda olur', answer: 'tesbih' },
-      { id: 'paylas', prompt: 'Komşularla paylaşılan ikram', answer: 'ikram' }
-    ],
-    memoryPairs: [
-      { id: 'wheat', icon: '🌾', label: 'Buğday' },
-      { id: 'drops', icon: '💧', label: 'Rahmet' },
-      { id: 'moon', icon: '🌙', label: 'Hilal' }
-    ],
-    colorGrid: {
-      palette: [
-        { id: 'emerald', label: 'Zümrüt', color: '#047857' },
-        { id: 'amber', label: 'Kehribar', color: '#fbbf24' },
-        { id: 'silver', label: 'Gümüş', color: '#e5e7eb' }
-      ],
-      target: [
-        ['emerald', 'amber', 'emerald'],
-        ['amber', 'silver', 'amber'],
-        ['emerald', 'amber', 'emerald']
-      ],
-      hint: 'Zümrüt çember yap, ortada gümüş parıltı ve kehribar damlaları bırak.'
-    },
-    puzzlePieces: [
-      { id: 'courtyard', label: 'Cami Avlusu', icon: '🕌', color: '#0f766e' },
-      { id: 'tray', label: 'Tatlı Tepsisi', icon: '🍯', color: '#f59e0b' },
-      { id: 'pitcher', label: 'Şerbet İbriki', icon: '🫗', color: '#f97316' },
-      { id: 'letter', label: 'Dilek Kartı', icon: '📜', color: '#10b981' }
-    ],
-    puzzleHint: 'Avluyu hazırla, tatlı tepsisini ve şerbeti koy, en üste dilek kartını yerleştir.',
-    rhythmActions: [
-      { id: 'dua', label: 'Dua et', icon: '📿' },
-      { id: 'share', label: 'İkram götür', icon: '🍯' },
-      { id: 'shine', label: 'Fener yak', icon: '🕯️' }
-    ],
-    rhythmSequence: ['dua', 'share', 'shine', 'dua'],
-    timeline: [
-      { id: 'hazirlik', label: 'Akşam ikramlar hazırlanır.' },
-      { id: 'zikir', label: 'Tesbih ve dualar edilir.' },
-      { id: 'ikram', label: 'Komşulara tatlılar götürülür.' }
-    ],
-    quiz: {
-      question: 'Regaip Kandili’nin diğer adı nedir?',
-      options: ['Bereket gecesi', 'Sadece tatil', 'Yaz şenliği'],
-      correctIndex: 0
-    },
-    completionMessage: 'Bereketli Regaip gecesini harika anlattın.'
-  },
-  'kandil-mirac': {
-    intro:
-      'Miraç Kandili, Peygamberimizin göğe yükseldiği mucizeyi hatırladığımız özel gecedir.',
-    videoId: 'imkRtNN_0Bw',
-    prepHints: [
-      'Gökyüzündeki yıldızları düşün ve üç dilek seç.',
-      'Seccadeni hayal edip dua edeceğin anı planla.',
-      'Ailenle paylaşacağın güzel sözü belirle.'
-    ],
-    wordGame: {
-      prompt: 'Bu mucizevi gecenin adını tamamla.',
-      answer: 'MIRAC',
-      letterPool: ['M', 'I', 'R', 'A', 'C', 'N', 'L', 'H', 'Z', 'K', 'S', 'T']
-    },
-    matchItems: [
-      { id: 'mirac', label: 'Miraç Gecesi', badge: '🌌' },
-      { id: 'seccade', label: 'Seccade', badge: '🧿' },
-      { id: 'dua', label: 'Dua', badge: '📿' }
-    ],
-    matchTargets: [
-      { id: 'mucize', prompt: 'Peygamberimizin göğe yükseldiği gece', answer: 'mirac' },
-      { id: 'yer', prompt: 'Dua ederken serilir', answer: 'seccade' },
-      { id: 'sozcuk', prompt: 'Kalpten söylenen sözler', answer: 'dua' }
-    ],
-    memoryPairs: [
-      { id: 'star', icon: '⭐', label: 'Yıldız' },
-      { id: 'ladder', icon: '🪜', label: 'Merdiven' },
-      { id: 'cloud', icon: '☁️', label: 'Bulut' }
-    ],
-    colorGrid: {
-      palette: [
-        { id: 'indigo', label: 'Gece İndigosu', color: '#3730a3' },
-        { id: 'starlight', label: 'Yıldız Işığı', color: '#facc15' },
-        { id: 'white', label: 'Beyaz', color: '#ffffff' }
-      ],
-      target: [
-        ['indigo', 'starlight', 'indigo'],
-        ['starlight', 'white', 'starlight'],
-        ['indigo', 'starlight', 'indigo']
-      ],
-      hint: 'İndigo gökyüzü çiz, ortada beyaz parıltı ve yıldız ışıkları olsun.'
-    },
-    puzzlePieces: [
-      { id: 'stairs', label: 'Miraç Merdiveni', icon: '🪜', color: '#4c1d95' },
-      { id: 'light', label: 'Nur Işığı', icon: '✨', color: '#facc15' },
-      { id: 'cloud', label: 'Bulut Perdesi', icon: '☁️', color: '#38bdf8' },
-      { id: 'prayer', label: 'Dua Kitabı', icon: '📖', color: '#f97316' }
-    ],
-    puzzleHint: 'Merdiveni yerleştir, nur ışığını ekle, bulut perdesini çek ve dua kitabını üstte aç.',
-    rhythmActions: [
-      { id: 'takbir', label: 'Tekbir getir', icon: '📿' },
-      { id: 'look', label: 'Yıldızlara bak', icon: '🔭' },
-      { id: 'shine', label: 'Nur saç', icon: '✨' }
-    ],
-    rhythmSequence: ['takbir', 'look', 'shine', 'takbir'],
-    timeline: [
-      { id: 'hazirlik', label: 'Akşam seccade hazırlanır.' },
-      { id: 'dua', label: 'Gece dua edilir, Miraç anlatılır.' },
-      { id: 'ikram', label: 'Ertesi gün aileyle paylaşım yapılır.' }
-    ],
-    quiz: {
-      question: 'Miraç gecesi neyi hatırlarız?',
-      options: ['Peygamberimizin göğe yükselişini', 'Sadece tatili', 'Deniz kenarını'],
-      correctIndex: 0
-    },
-    completionMessage: 'Miraç Kandili’nin ışığını paylaştın, teşekkürler.'
-  },
-  'kandil-berat': {
-    intro:
-      'Berat Kandili, affedilme ve temiz sayfalar açma gecesidir. Dualarla kalbimizi yenileriz.',
-    videoId: 'imkRtNN_0Bw',
-    prepHints: [
-      'Yeni bir sayfa açtığını hayal et.',
-      'Kendine ve sevdiklerine teşekkür etmeyi planla.',
-      'Paylaşacağın kandil notunu hazırla.'
-    ],
-    wordGame: {
-      prompt: 'Temiz sayfalar gecesinin adını yaz.',
-      answer: 'BERAT',
-      letterPool: ['B', 'E', 'R', 'A', 'T', 'N', 'L', 'V', 'K', 'S', 'D', 'I']
-    },
-    matchItems: [
-      { id: 'berat', label: 'Berat Gecesi', badge: '📜' },
-      { id: 'tesbih', label: 'Tesbih', badge: '📿' },
-      { id: 'ikram', label: 'Helva Paylaşımı', badge: '🍮' }
-    ],
-    matchTargets: [
-      { id: 'gece', prompt: 'Kalplerin temizlendiği gece', answer: 'berat' },
-      { id: 'zikir', prompt: 'Dua ederken avuçlarda tutulur', answer: 'tesbih' },
-      { id: 'paylas', prompt: 'Komşulara ikram edilen tatlı', answer: 'ikram' }
-    ],
-    memoryPairs: [
-      { id: 'feather', icon: '🪶', label: 'Temiz Sayfa' },
-      { id: 'olive', icon: '🫒', label: 'Bereket Yağı' },
-      { id: 'moon', icon: '🌙', label: 'Hilal' }
-    ],
-    colorGrid: {
-      palette: [
-        { id: 'teal', label: 'Teal', color: '#0f766e' },
-        { id: 'white', label: 'Beyaz', color: '#ffffff' },
-        { id: 'amber', label: 'Kehribar', color: '#f59e0b' }
-      ],
-      target: [
-        ['teal', 'white', 'teal'],
-        ['white', 'amber', 'white'],
-        ['teal', 'white', 'teal']
-      ],
-      hint: 'Teal çerçeve çiz, ortada beyaz sayfa ve kehribar ışık olsun.'
-    },
-    puzzlePieces: [
-      { id: 'paper', label: 'Yeni Sayfa', icon: '📜', color: '#fcd34d' },
-      { id: 'lamp', label: 'Kandil Lambası', icon: '🪔', color: '#fb7185' },
-      { id: 'plate', label: 'Helva Tabağı', icon: '🍮', color: '#d97706' },
-      { id: 'tesbih', label: 'Tesbih Halkası', icon: '📿', color: '#14b8a6' }
-    ],
-    puzzleHint: 'Önce yeni sayfayı aç, lambayı yak, helva tabağını koy ve tesbihi yanına yerleştir.',
-    rhythmActions: [
-      { id: 'dua', label: 'Dua et', icon: '📿' },
-      { id: 'write', label: 'Niyet yaz', icon: '🖋️' },
-      { id: 'share', label: 'Helva ikram et', icon: '🍮' }
-    ],
-    rhythmSequence: ['dua', 'write', 'share', 'dua'],
-    timeline: [
-      { id: 'hazirlik', label: 'Akşam tatlı hazırlanır.' },
-      { id: 'dua', label: 'Gece dualar edilir.' },
-      { id: 'ikram', label: 'Komşularla helva paylaşılır.' }
-    ],
-    quiz: {
-      question: 'Berat Kandili’nde neyi hatırlarız?',
-      options: ['Kalplerin temizlenmesini', 'Sadece oyun oynamayı', 'Deniz kutlamasını'],
-      correctIndex: 0
-    },
-    completionMessage: 'Berat Kandili’nin huzurunu anlattın, çok güzel!'
-  },
-  'gunler-kadir': {
-    intro:
-      'Kadir Gecesi, bin aydan hayırlı olan gecedir. Kur’an’ın indirildiği bu gece dualarla değerlendirilir.',
-    videoId: 'imkRtNN_0Bw',
-    prepHints: [
-      'Kur’an okunurken duyduğun sesleri hayal et.',
-      'Seccadeni ve mushafını zihninde hazırla.',
-      'Ailenle birlikte yapacağın duası düşün.'
-    ],
-    stepTitles: [
-      'Hazırlık',
-      'Kelime Hazinesi',
-      'Değerleri Eşleştir',
-      'Anımsama Kartları',
-      'Işık Deseni',
-      'Kadir Sofrası',
-      'Ritimli Dua',
-      'Günü Planla',
-      'Mini Test',
-      'Bayramlaşma'
-    ],
-    wordGame: {
-      prompt: 'Bu özel gecenin adını tamamla.',
-      answer: 'KADIR',
-      letterPool: ['K', 'A', 'D', 'I', 'R', 'L', 'M', 'N', 'S', 'E', 'T', 'H']
-    },
-    matchItems: [
-      { id: 'kadir', label: 'Kadir Gecesi', badge: '🌌' },
-      { id: 'kuran', label: 'Kur’an-ı Kerim', badge: '📖' },
-      { id: 'dua', label: 'Dua', badge: '📿' }
-    ],
-    matchTargets: [
-      { id: 'gece', prompt: 'Bin aydan hayırlı gece', answer: 'kadir' },
-      { id: 'kitap', prompt: 'Bu gecede indirilen kitap', answer: 'kuran' },
-      { id: 'ibadet', prompt: 'Kalpten söylenen sözler', answer: 'dua' }
-    ],
-    memoryPairs: [
-      { id: 'moon', icon: '🌙', label: 'Hilal' },
-      { id: 'star', icon: '🌟', label: 'Yıldız' },
-      { id: 'book', icon: '📖', label: 'Kur’an' }
-    ],
-    colorGrid: {
-      palette: [
-        { id: 'midnight', label: 'Gece', color: '#0f172a' },
-        { id: 'gold', label: 'Altın', color: '#facc15' },
-        { id: 'silver', label: 'Gümüş', color: '#e2e8f0' }
-      ],
-      target: [
-        ['midnight', 'gold', 'midnight'],
-        ['gold', 'silver', 'gold'],
-        ['midnight', 'gold', 'midnight']
-      ],
-      hint: 'Geceyi çevrele, ortada gümüş sayfa ve altın yıldızlar olsun.'
-    },
-    puzzlePieces: [
-      { id: 'seccade', label: 'Seccade', icon: '🧿', color: '#2563eb' },
-      { id: 'book', label: 'Kur’an-ı Kerim', icon: '📖', color: '#f97316' },
-      { id: 'lamp', label: 'Kandil Işığı', icon: '🪔', color: '#facc15' },
-      { id: 'dates', label: 'İkram Tabağı', icon: '🍯', color: '#d97706' }
-    ],
-    puzzleHint: 'Seccadeyi ser, Kur’anı aç, kandili yak ve ikram tabağını hazırla.',
-    rhythmActions: [
-      { id: 'takbir', label: 'Tekbir getir', icon: '📿' },
-      { id: 'recite', label: 'Kur’an oku', icon: '📖' },
-      { id: 'light', label: 'Fener yak', icon: '🪔' }
-    ],
-    rhythmSequence: ['takbir', 'recite', 'takbir', 'light'],
-    timeline: [
-      { id: 'hazirlik', label: 'Akşam Kur’an tilaveti için hazırlanırız.' },
-      { id: 'dua', label: 'Gece dua eder, Kur’an okuruz.' },
-      { id: 'ikram', label: 'Sevdiklerimizle ikram paylaşırız.' }
-    ],
-    quiz: {
-      question: 'Kadir Gecesi neden değerlidir?',
-      options: ['Kur’an bu gecede indirildiği için', 'Sadece yaz tatili olduğu için', 'Çok oyun oynandığı için'],
-      correctIndex: 0
-    },
-    completionMessage: 'Kadir Gecesi’ni anlamlı hale getirdin, tebrikler!'
-  },
-  'gunler-asure': {
-    intro:
-      'Aşure Günü paylaşmanın tatlı halidir. Çeşitli malzemeler bir araya gelerek bereketli bir tatlı oluşturur.',
-    videoId: 'imkRtNN_0Bw',
-    prepHints: [
-      'Aşure kazanın kokusunu hayal et.',
-      'Hangi malzemeleri ekleyeceğini sırala.',
-      'Komşularına kimlere götüreceğini düşün.'
-    ],
-    wordGame: {
-      prompt: 'Tatlımızın adını harflerle tamamla.',
-      answer: 'ASURE',
-      letterPool: ['A', 'S', 'U', 'R', 'E', 'L', 'M', 'K', 'N', 'I', 'T', 'B']
-    },
-    matchItems: [
-      { id: 'asure', label: 'Aşure Tatlısı', badge: '🍲' },
-      { id: 'paylas', label: 'Komşuya İkram', badge: '🧺' },
-      { id: 'malzeme', label: 'Çoklu Malzeme', badge: '🫘' }
-    ],
-    matchTargets: [
-      { id: 'tatli', prompt: 'Farklı malzemelerin birleştiği tatlı', answer: 'asure' },
-      { id: 'komsu', prompt: 'Paylaşılan ikram', answer: 'paylas' },
-      { id: 'bereket', prompt: 'Bu tatlıyı özel kılan çeşitlilik', answer: 'malzeme' }
-    ],
-    memoryPairs: [
-      { id: 'wheat', icon: '🌾', label: 'Buğday' },
-      { id: 'sugar', icon: '🧂', label: 'Şeker' },
-      { id: 'apricot', icon: '🍑', label: 'Kuru Kayısı' }
-    ],
-    colorGrid: {
-      palette: [
-        { id: 'clay', label: 'Toprak', color: '#92400e' },
-        { id: 'cream', label: 'Krem', color: '#f5f5dc' },
-        { id: 'cranberry', label: 'Kızıl', color: '#b91c1c' }
-      ],
-      target: [
-        ['clay', 'cream', 'clay'],
-        ['cream', 'cranberry', 'cream'],
-        ['clay', 'cream', 'clay']
-      ],
-      hint: 'Toprak rengi kaseyi çiz, ortada krem tatlı ve kızıl taneler olsun.'
-    },
-    puzzlePieces: [
-      { id: 'pot', label: 'Aşure Kazanı', icon: '🍯', color: '#ca8a04' },
-      { id: 'ladle', label: 'Kepçe', icon: '🥄', color: '#9ca3af' },
-      { id: 'tray', label: 'İkram Tepsisi', icon: '🧺', color: '#d97706' },
-      { id: 'spice', label: 'Tarçın Serpici', icon: '🧂', color: '#a855f7' }
-    ],
-    puzzleHint: 'Kazanın altını yak, kepçeyi hazırla, tepsiye doldur ve tarçın serpiştir.',
-    rhythmActions: [
-      { id: 'mix', label: 'Malzemeleri karıştır', icon: '🥄' },
-      { id: 'taste', label: 'Tat kontrolü', icon: '🍯' },
-      { id: 'share', label: 'Komşuya götür', icon: '🧺' }
-    ],
-    rhythmSequence: ['mix', 'mix', 'taste', 'share'],
-    timeline: [
-      { id: 'hazirlik', label: 'Sabah malzemeler hazırlanır.' },
-      { id: 'pisirme', label: 'Kazan kaynar, aşure pişer.' },
-      { id: 'paylas', label: 'Kaseler komşulara dağıtılır.' }
-    ],
-    quiz: {
-      question: 'Aşure gününde tatlıyı ne yaparız?',
-      options: ['Komşularla paylaşırız', 'Saklar kimseye vermeyiz', 'Sadece fotoğraf çekeriz'],
-      correctIndex: 0
-    },
-    completionMessage: 'Aşure Günü’nün tatlı paylaşımını anlattın, eline sağlık!'
   },
 };
 

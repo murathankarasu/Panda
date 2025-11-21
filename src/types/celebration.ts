@@ -58,6 +58,43 @@ export interface WordGameConfig {
   letterPool: string[];
 }
 
+// Yeni Oyun Tipleri
+export interface SortingItem {
+  id: string;
+  label: string;
+  icon: string;
+  category: 'left' | 'right';
+}
+
+export interface SortingCategory {
+  id: 'left' | 'right';
+  label: string;
+  icon: string;
+  color: string;
+}
+
+export interface SortingGameConfig {
+  items: SortingItem[];
+  categories: [SortingCategory, SortingCategory];
+}
+
+export interface SilhouettePair {
+  id: string;
+  icon: string;
+  label: string;
+  color: string;
+}
+
+export interface OddOneOutItem {
+  id: string;
+  icon: string;
+  isOdd: boolean;
+}
+
+export interface OddOneOutConfig {
+  items: OddOneOutItem[];
+}
+
 export interface CelebrationConfig {
   intro: string;
   videoId: string;
@@ -74,8 +111,11 @@ export interface CelebrationConfig {
   rhythmSequence: string[];
   timeline: TimelineItem[];
   quiz: QuizConfig;
+  // Opsiyonel olarak ekliyoruz, mevcut veri bozulmasın diye
+  sortingGame?: SortingGameConfig; 
+  silhouetteGame?: SilhouettePair[];
+  oddOneOutGame?: OddOneOutConfig;
   completionMessage: string;
 }
 
 export type CelebrationConfigMap = Record<string, CelebrationConfig>;
-

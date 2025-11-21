@@ -1,8 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
 import { Level } from './types';
-import { levels } from './data/levels';
-import { loadProgress } from './utils/progress';
+import { levels as localLevels } from './data/levels';
+import { loadProgress, syncProgress } from './utils/progress';
+import { firebaseService } from './services/firebaseService';
 import WelcomeScreen from './components/WelcomeScreen';
 import NameScreen from './components/NameScreen';
 import WelcomeMessageScreen from './components/WelcomeMessageScreen';
@@ -14,14 +15,15 @@ import AdminDashboard from './components/AdminDashboard';
 import './App.css';
 
 function App() {
-  const [levelsWithProgress, setLevelsWithProgress] = useState<Level[]>(levels);
+  const [sourceLevels, setSourceLevels] = useState<Level[]>(localLevels);
+  const [levelsWithProgress, setLevelsWithProgress] = useState<Level[]>(localLevels);
   const [isLoading, setIsLoading] = useState(true);
 
   const refreshLevels = useCallback(() => {
     const progress = loadProgress();
 
-    setLevelsWithProgress(prevLevels => {
-      const sortedLevels = [...prevLevels].sort((a, b) => a.order - b.order);
+    setLevelsWithProgress(() => {
+      const sortedLevels = [...sourceLevels].sort((a, b) => a.order - b.order);
 
       // Grupla ve her kategori içindeki sıralamayı hazırla
       const levelsByCategory = sortedLevels.reduce((acc, level) => {
@@ -66,10 +68,40 @@ function App() {
     });
 
     setIsLoading(false);
+  }, [sourceLevels]);
+
+  useEffect(() => {
+    const initApp = async () => {
+      try {
+        // 1. Fetch levels from Firestore
+        const remoteLevels = await firebaseService.getLevels();
+        setSourceLevels(remoteLevels);
+
+        // 2. Sync user progress
+        await syncProgress();
+      } catch (error) {
+        console.error('App initialization failed:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    initApp();
   }, []);
 
   useEffect(() => {
     refreshLevels();
+  }, [refreshLevels, sourceLevels]); // Run when levels or progress logic changes
+
+  useEffect(() => {
+    const handleProgressUpdated = () => {
+      refreshLevels();
+    };
+
+    window.addEventListener('progress-updated', handleProgressUpdated);
+    return () => {
+      window.removeEventListener('progress-updated', handleProgressUpdated);
+    };
   }, [refreshLevels]);
 
   useEffect(() => {

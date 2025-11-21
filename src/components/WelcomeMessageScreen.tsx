@@ -13,52 +13,40 @@ export default function WelcomeMessageScreen() {
     if (savedName) {
       setUserName(savedName);
       
-      // Start animation after a short delay
+      // Start animation
       setTimeout(() => {
         setIsAnimating(true);
-      }, 500);
+      }, 100);
       
-      // Navigate to map after animation (3 seconds)
+      // Navigate to map
       setTimeout(() => {
         navigate('/map');
       }, 3500);
     } else {
-      // If no name, redirect to name screen
       navigate('/name');
     }
   }, [navigate]);
 
   return (
     <div className="welcome-message-screen">
-      <div className="welcome-message-container">
-        {/* Left Side - Big Panda 3.png */}
-        <div className="welcome-message-left">
-          <div className={`big-panda-welcome ${isAnimating ? 'animate' : ''}`}>
-            <img 
-              src="/assets/3.png" 
-              alt="Panda" 
-              className="big-panda-image-welcome"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.style.display = 'none';
-                const placeholder = target.parentElement?.querySelector('.big-panda-placeholder-welcome') as HTMLElement;
-                if (placeholder) placeholder.style.display = 'flex';
-              }}
-            />
-            <div className="big-panda-placeholder-welcome" style={{ display: 'none' }}>
-              🐼
-            </div>
-          </div>
+      <div className="welcome-message-content">
+        <div className={`character-container ${isAnimating ? 'slide-in' : ''}`}>
+          <img src="/assets/3.png" alt="Panda" className="welcome-character" />
+          <div className="confetti-bg"></div>
         </div>
-
-        {/* Right Side - Welcome Message */}
-        <div className="welcome-message-right">
-          <h1 className={`welcome-message-text ${isAnimating ? 'fade-in' : ''}`}>
-            Memnun oldum {userName}!
+        
+        <div className={`text-container ${isAnimating ? 'fade-up' : ''}`}>
+          <h2 className="welcome-greeting">Harika!</h2>
+          <h1 className="welcome-name">
+            Memnun oldum, <br />
+            <span className="name-highlight">{userName}</span>!
           </h1>
+          <p className="loading-text">Maceran hazırlanıyor...</p>
+          <div className="loading-bar">
+            <div className="loading-fill"></div>
+          </div>
         </div>
       </div>
     </div>
   );
 }
-

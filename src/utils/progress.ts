@@ -1,10 +1,20 @@
 import { UserProgress, Level } from '../types';
+import { firebaseService } from '../services/firebaseService';
 
 const STORAGE_KEY = 'sila_egitim_progress';
 
 export function saveProgress(progress: UserProgress[]) {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+    
+    // Firestore Sync (Fire and forget)
+    const completedLevels = progress
+      .filter(p => p.completed)
+      .map(p => p.levelId);
+      
+    firebaseService.saveProgress(completedLevels).catch(err => {
+      console.error('Firestore save error:', err);
+    });
   } catch (error) {
     console.error('Progress kaydedilemedi:', error);
   }
@@ -20,6 +30,43 @@ export function loadProgress(): UserProgress[] {
     console.error('Progress yüklenemedi:', error);
   }
   return [];
+}
+
+export async function syncProgress() {
+  try {
+    const userData = await firebaseService.getUserData();
+    if (userData && userData.completedLevels) {
+      const localProgress = loadProgress();
+      const remoteCompleted: string[] = userData.completedLevels;
+      
+      // Merge logic: If remote has a completed level not in local, add it
+      let changed = false;
+      remoteCompleted.forEach(levelId => {
+        if (!localProgress.find(p => p.levelId === levelId && p.completed)) {
+          const existing = localProgress.find(p => p.levelId === levelId);
+          if (existing) {
+            existing.completed = true;
+          } else {
+            localProgress.push({
+              levelId,
+              completed: true,
+              stars: 0, // Default
+              lastAttempt: new Date()
+            });
+          }
+          changed = true;
+        }
+      });
+      
+      if (changed) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(localProgress));
+        return localProgress;
+      }
+    }
+  } catch (error) {
+    console.error('Sync error:', error);
+  }
+  return null;
 }
 
 export function updateLevelProgress(levelId: string, stars: number, completed: boolean) {
@@ -64,4 +111,3 @@ export function unlockNextLevel(levels: Level[], completedLevelId: string): Leve
 
   return null;
 }
-
