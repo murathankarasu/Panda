@@ -144,7 +144,7 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
     () => {
       if (!config) return defaultStepTitles;
       return (config.stepTitles && config.stepTitles.length >= defaultStepTitles.length
-        ? config.stepTitles
+      ? config.stepTitles
         : defaultStepTitles);
     },
     [config]
@@ -163,7 +163,7 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
   const paletteColorMap = useMemo(() => {
     const map = new Map<string, string>();
     if (config) {
-      config.colorGrid.palette.forEach(item => map.set(item.id, item.color));
+    config.colorGrid.palette.forEach(item => map.set(item.id, item.color));
     }
     return map;
   }, [config, paletteShuffled]);
@@ -489,7 +489,7 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
   };
 
   const handleColorSelect = (id: string) => setSelectedColor(id);
-  
+
   const handleColorCellClick = (row: number, col: number) => {
     if (!selectedColor || colorSolved) return;
     setColorGridState(prev => {
@@ -529,7 +529,7 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
     setPuzzleSlots(prev => {
       const next = [...prev];
       const originFromSlot = origin.startsWith('slot-') ? parseInt(origin.split('-')[1], 10) : null;
-      
+
       if (originFromSlot !== null && Number.isInteger(originFromSlot)) next[originFromSlot] = null;
       const existingIndex = next.findIndex(id => id === pieceId);
       if (existingIndex !== -1) next[existingIndex] = null;
@@ -739,33 +739,33 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
   );
 
   const renderWordGame = () => (
-    <>
-      <h2>Kelime Oyunu</h2>
-      <p className="step-lead">{config.wordGame.prompt}</p>
-      <div className="word-slots">
+      <>
+        <h2>Kelime Oyunu</h2>
+        <p className="step-lead">{config.wordGame.prompt}</p>
+        <div className="word-slots">
         {Array.from({ length: config.wordGame.answer.length }).map((_, i) => (
           <div key={i} className="word-slot">{formedWord[i] ?? ''}</div>
-        ))}
-      </div>
-      <div className="word-pool">
+          ))}
+        </div>
+        <div className="word-pool">
         {wordOrder.map(idx => {
           const letter = config.wordGame.letterPool[idx];
           const used = wordProgress.includes(idx);
-          return (
+            return (
             <button key={`${letter}-${idx}`} className={`word-letter ${used ? 'used' : ''}`}
               onClick={() => handleLetterPick(idx)} disabled={used || wordSolved}>
-              {letter}
-            </button>
-          );
-        })}
-      </div>
-      <div className="word-actions">
+                {letter}
+              </button>
+            );
+          })}
+        </div>
+        <div className="word-actions">
         <button className="ghost-action" onClick={handleWordUndo} disabled={!wordProgress.length || wordSolved}>Geri Al</button>
         <button className="primary-action" onClick={handleWordCheck}>Kontrol Et</button>
-      </div>
-      {wordFeedback && <div className="feedback">{wordFeedback}</div>}
-    </>
-  );
+        </div>
+        {wordFeedback && <div className="feedback">{wordFeedback}</div>}
+      </>
+    );
 
   const renderMatchStep = () => (
     <>
@@ -831,7 +831,7 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
                   <div key={`${r}-${col}`} className="color-preview-cell" style={{ backgroundColor: paletteColorMap.get(c) || '#eee' }} />
                 ))
               )}
-           </div>
+            </div>
         </div>
 
         <div className="color-palette">
@@ -863,7 +863,7 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
   const renderSilhouetteStep = () => {
     if (!config.silhouetteGame) return null;
     return (
-      <>
+    <>
         <h2>Gölge Eşleştirme</h2>
         <p className="step-lead">Renkli nesneleri gölgelerine sürükle.</p>
         <div className="silhouette-board">
@@ -888,9 +888,9 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
                 ) : (
                   <span className="silhouette-shadow">{target.icon}</span>
                 )}
-              </div>
-            ))}
-          </div>
+            </div>
+          ))}
+        </div>
         </div>
         {silhouetteFeedback && <div className="feedback">{silhouetteFeedback}</div>}
       </>
@@ -911,7 +911,7 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
             <div className="zone-header" style={{ backgroundColor: catLeft.color }}>
               <span>{catLeft.icon}</span>
               <span>{catLeft.label}</span>
-            </div>
+      </div>
             <div className="zone-content">
               {items.filter(i => sortingState[i.id] === 'left').map(i => (
                 <div key={i.id} className="sorted-item">{i.icon} {i.label}</div>
@@ -932,7 +932,7 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
             <div className="zone-header" style={{ backgroundColor: catRight.color }}>
               <span>{catRight.icon}</span>
               <span>{catRight.label}</span>
-            </div>
+        </div>
             <div className="zone-content">
               {items.filter(i => sortingState[i.id] === 'right').map(i => (
                 <div key={i.id} className="sorted-item">{i.icon} {i.label}</div>
@@ -959,7 +959,7 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
                 {!piece && (
                     <div className="puzzle-hint">
                         {targetHint}
-                    </div>
+                  </div>
                 )}
                 {piece && (
                   <div className="puzzle-piece" draggable onDragStart={e => handlePuzzleDragStart(e, piece.id, `slot-${i}`)}
@@ -1003,7 +1003,7 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
         borderRadius: '20px',
         flexWrap: 'wrap'
       }}>
-        {config.rhythmSequence.map((actionId, index) => {
+          {config.rhythmSequence.map((actionId, index) => {
             const action = config.rhythmActions.find(a => a.id === actionId);
             const isCurrent = index === rhythmIndex;
             const isDone = index < rhythmIndex;
@@ -1026,10 +1026,10 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
                     boxShadow: isCurrent ? '0 5px 15px rgba(84, 160, 255, 0.4)' : 'none'
                 }}>
                     {isDone ? '✓' : action?.icon}
-                </div>
+              </div>
             );
-        })}
-      </div>
+          })}
+        </div>
 
       <div className="rhythm-board">
         <div className="rhythm-actions">
@@ -1066,12 +1066,12 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
   const renderOddOneOutStep = () => {
     if (!config.oddOneOutGame) return null;
     return (
-      <>
+    <>
         <h2>Farkı Bul</h2>
         <p className="step-lead">Diğerlerinden farklı olanı seç.</p>
         <div className="odd-one-out-grid" style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '40px' }}>
           {oddOneOutItemsShuffled.map(item => (
-            <button
+          <button
               key={item.id}
               className={`odd-one-out-item ${oddOneOutSelection === item.id ? 'selected' : ''}`}
               style={{
@@ -1086,12 +1086,12 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
                 transition: 'all 0.2s'
               }}
               onClick={() => handleOddOneOutSelect(item.id)}
-            >
+          >
               {item.icon}
-            </button>
-          ))}
-        </div>
-        <div className="actions">
+          </button>
+        ))}
+      </div>
+      <div className="actions">
           <button className="primary-action" onClick={handleOddOneOutCheck}>Kontrol Et</button>
         </div>
         {oddOneOutFeedback && <div className="feedback">{oddOneOutFeedback}</div>}
@@ -1107,7 +1107,7 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
         {quizOptionOrder.map(idx => (
           <button key={idx} className={`quiz-option ${quizSelection === idx ? 'selected' : ''}`} onClick={() => handleQuizSelect(idx)}>
             {config.quiz.options[idx]}
-          </button>
+        </button>
         ))}
       </div>
       <div className="actions"><button className="primary-action" onClick={handleQuizCheck}>Kontrol Et</button></div>

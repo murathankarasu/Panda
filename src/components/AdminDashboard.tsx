@@ -80,9 +80,9 @@ export default function AdminDashboard() {
         }
       }
 
-      if (hasUpdates) {
-        setDrafts(newDrafts);
-      }
+        if (hasUpdates) {
+          setDrafts(newDrafts);
+        }
     };
 
     loadRemoteConfigs();
@@ -350,9 +350,9 @@ export default function AdminDashboard() {
             </div>
 
             {/* Sticky Save Bar */}
-            <div className="save-bar">
-              <div className="save-bar-info">
-                {activeLevels.find(l => l.id === activeLevelId)?.title || activeLevelId} düzenleniyor
+              <div className="save-bar">
+                <div className="save-bar-info">
+                  {activeLevels.find(l => l.id === activeLevelId)?.title || activeLevelId} düzenleniyor
               </div>
               <div style={{display:'flex', gap:'10px'}}>
                 <button 
