@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Level } from '../types';
 import { getLevelProgress } from '../utils/progress';
-import { firebaseService } from '../services/firebaseService';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
 import './MapView.css';

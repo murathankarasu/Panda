@@ -172,7 +172,7 @@ export default function LevelPage() {
       incrementLevelCompletedToday();
       
       // Unlock next level
-      unlockNextLevel(levels, levelId!);
+      unlockNextLevel(localLevels, levelId!);
       window.dispatchEvent(new Event('progress-updated'));
       
       setTimeout(() => {

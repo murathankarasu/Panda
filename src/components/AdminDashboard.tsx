@@ -4,36 +4,12 @@ import { levels } from '../data/levels';
 import { firebaseService } from '../services/firebaseService';
 import {
   getCelebrationConfigMap,
-  loadCelebrationOverrides,
   updateCelebrationOverride,
 } from '../data/celebrationConfigs';
 import type {
   CelebrationConfig,
-  ColorConfig,
-  PuzzlePiece,
-  RhythmAction,
 } from '../types/celebration';
 import './AdminDashboard.css';
-
-// Basic slugify for ID generation
-const slugify = (value: string): string => {
-  return value
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9çğıöşü]+/g, '-')
-    .replace(/^-+|-+$/g, '') || 'id';
-};
-
-const ensureUniqueId = (base: string, taken: string[], fallbackPrefix: string): string => {
-  const initial = slugify(base) || `${fallbackPrefix}-${taken.length + 1}`;
-  let candidate = initial;
-  let index = 1;
-  while (taken.includes(candidate)) {
-    candidate = `${initial}-${index}`;
-    index += 1;
-  }
-  return candidate;
-};
 
 // Helpers
 const parseList = (raw: string): string[] => raw.split('\n').map(s => s.trim()).filter(Boolean);
@@ -50,7 +26,6 @@ export default function AdminDashboard() {
 
   // Data State
   const [refreshKey, setRefreshKey] = useState(0);
-  const [overrides, setOverrides] = useState(loadCelebrationOverrides);
   const [isSeeding, setIsSeeding] = useState(false);
   const [activeLevelId, setActiveLevelId] = useState<string | null>(null);
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
@@ -107,10 +82,6 @@ export default function AdminDashboard() {
 
       if (hasUpdates) {
         setDrafts(newDrafts);
-        // Update local overrides to reflect remote state visually
-        const newOverrides: any = {};
-        celebrationIds.forEach(id => newOverrides[id] = newDrafts[id]);
-        setOverrides(newOverrides);
       }
     };
 
@@ -173,7 +144,6 @@ export default function AdminDashboard() {
     try {
       await firebaseService.saveCelebrationConfig(levelId, draft);
       updateCelebrationOverride(levelId, draft);
-      setOverrides(prev => ({ ...prev, [levelId]: draft }));
       setMessage({ type: 'success', text: 'Değişiklikler kaydedildi.' });
     } catch (error) {
       console.error(error);
@@ -382,7 +352,7 @@ export default function AdminDashboard() {
             {/* Sticky Save Bar */}
             <div className="save-bar">
               <div className="save-bar-info">
-                {activeDraft.title || activeLevelId} düzenleniyor
+                {activeLevels.find(l => l.id === activeLevelId)?.title || activeLevelId} düzenleniyor
               </div>
               <div style={{display:'flex', gap:'10px'}}>
                 <button 

@@ -6,7 +6,7 @@ import { updateLevelProgress, unlockNextLevel } from '../../utils/progress';
 import { incrementLevelCompletedToday } from '../../utils/dailyQuests';
 import { firebaseService } from '../../services/firebaseService';
 import './CelebrationLevel.css';
-import type { MatchTarget, TimelineItem, MemoryPair, ColorConfig, PuzzlePiece, CelebrationConfig, SortingItem, SilhouettePair, OddOneOutItem } from '../../types/celebration';
+import type { MatchTarget, TimelineItem, MemoryPair, ColorConfig, PuzzlePiece, CelebrationConfig } from '../../types/celebration';
 import { getCelebrationConfig } from '../../data/celebrationConfigs';
 
 interface MemoryCard {
