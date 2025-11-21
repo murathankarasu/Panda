@@ -1,0 +1,138 @@
+.welcome-message-screen {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #1a1a1a;
+  overflow: hidden;
+  position: relative;
+}
+
+.welcome-message-content {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  max-width: 1000px;
+  width: 100%;
+  padding: 0 40px;
+}
+
+/* Character Animation */
+.character-container {
+  flex: 1;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  transform: translateX(-100px);
+  opacity: 0;
+  transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.character-container.slide-in {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.welcome-character {
+  width: 100%;
+  max-width: 400px;
+  z-index: 2;
+  filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3));
+}
+
+/* Text Styling */
+.text-container {
+  flex: 1;
+  color: white;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 1s ease 0.5s;
+}
+
+.text-container.fade-up {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.welcome-greeting {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 2rem;
+  color: #FECA57; /* Yellow */
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.welcome-name {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 3.5rem;
+  line-height: 1.2;
+  margin-bottom: 30px;
+}
+
+.name-highlight {
+  background: linear-gradient(to right, #FF6B6B, #FECA57, #54A0FF);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+
+.loading-text {
+  font-size: 1.1rem;
+  color: #ccc;
+  margin-bottom: 15px;
+  font-family: 'Quicksand', sans-serif;
+}
+
+/* Loading Bar */
+.loading-bar {
+  width: 100%;
+  max-width: 300px;
+  height: 8px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.loading-fill {
+  height: 100%;
+  background: linear-gradient(to right, #FF6B6B, #FECA57, #54A0FF);
+  width: 0%;
+  border-radius: 4px;
+  animation: loadProgress 3s ease-in-out forwards;
+}
+
+@keyframes loadProgress {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .welcome-message-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 30px;
+  }
+
+  .character-container {
+    transform: translateY(-50px);
+  }
+  
+  .character-container.slide-in {
+    transform: translateY(0);
+  }
+
+  .welcome-character {
+    max-width: 250px;
+  }
+
+  .loading-bar {
+    margin: 0 auto;
+  }
+  
+  .welcome-name {
+    font-size: 2.5rem;
+  }
+}

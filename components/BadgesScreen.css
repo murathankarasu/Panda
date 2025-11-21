@@ -1,0 +1,293 @@
+.badges-view {
+  display: flex;
+  min-height: 100vh;
+  background-color: #FFF9E5;
+  font-family: 'Quicksand', sans-serif;
+}
+
+/* Sidebar Styles (Reused structure) */
+.sidebar {
+  width: 280px;
+  background-color: #1a1a1a;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 20px;
+  position: fixed;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  z-index: 100;
+}
+
+.sidebar-header {
+  margin-bottom: 50px;
+  padding-left: 10px;
+}
+
+.logo-text {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.logo-rainbow {
+  background: linear-gradient(to right, #FF6B6B, #FECA57, #54A0FF);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.logo-white {
+  color: white;
+  margin-left: 5px;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  flex: 1;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: transparent;
+  border: none;
+  color: #ccc;
+  padding: 15px 20px;
+  border-radius: 15px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-align: left;
+  font-family: 'Fredoka', sans-serif;
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.nav-item.active {
+  background: #2D2D2D;
+  color: #FECA57;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.nav-icon {
+  font-size: 1.4rem;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: #2D2D2D;
+  border-radius: 15px;
+  cursor: pointer;
+  position: relative;
+}
+
+.avatar-circle {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #FF6B6B, #54A0FF);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: white;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-weight: 700;
+  color: white;
+}
+
+.user-level {
+  font-size: 0.8rem;
+  color: #FECA57;
+}
+
+.profile-menu {
+  position: absolute;
+  bottom: 80px;
+  left: 0;
+  width: 100%;
+  background: white;
+  border-radius: 15px;
+  padding: 10px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  animation: popUp 0.2s ease;
+}
+
+.logout-btn {
+  width: 100%;
+  padding: 10px;
+  background: #fee2e2;
+  color: #dc2626;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Main Content Styles */
+.main-content-area {
+  flex: 1;
+  margin-left: 280px;
+  padding: 60px;
+}
+
+.content-header {
+  margin-bottom: 50px;
+}
+
+.header-title {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 3rem;
+  color: #2D2D2D;
+  margin-bottom: 10px;
+}
+
+.header-subtitle {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.badges-section {
+  margin-bottom: 60px;
+}
+
+.badges-section-title {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.5rem;
+  color: #2D2D2D;
+  margin-bottom: 25px;
+  padding-left: 10px;
+  border-left: 5px solid #54A0FF;
+}
+
+.badges-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+.badge-card {
+  background: white;
+  border-radius: 20px;
+  padding: 25px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  transition: transform 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.badge-card:hover {
+  transform: translateY(-5px);
+}
+
+.badge-card.unlocked {
+  border: 2px solid #FECA57;
+  background: linear-gradient(145deg, #fff, #fffdf5);
+}
+
+.badge-card.locked {
+  opacity: 0.7;
+  filter: grayscale(100%);
+  background: #f0f0f0;
+}
+
+.badge-icon-wrapper {
+  width: 70px;
+  height: 70px;
+  background: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.badge-info {
+  flex: 1;
+}
+
+.badge-name {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.2rem;
+  color: #2D2D2D;
+  margin-bottom: 5px;
+}
+
+.badge-description {
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.4;
+}
+
+.badge-date {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  color: #1DD1A1;
+  font-weight: 600;
+}
+
+.badge-lock-icon {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 1.2rem;
+  opacity: 0.5;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 80px;
+    padding: 20px 10px;
+  }
+  
+  .logo-text, .nav-item span, .user-info {
+    display: none;
+  }
+  
+  .main-content-area {
+    margin-left: 80px;
+    padding: 30px;
+  }
+  
+  .nav-item {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-title {
+    font-size: 2rem;
+  }
+  
+  .badges-grid {
+    grid-template-columns: 1fr;
+  }
+}
