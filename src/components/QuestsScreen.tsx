@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { getDailyQuestProgress } from '../utils/dailyQuests';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
+import { useLanguage } from '../contexts/LanguageContext';
 import './QuestsScreen.css';
 
 interface DailyQuest {
@@ -15,13 +16,14 @@ interface DailyQuest {
 
 export default function QuestsScreen() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [dailyQuests, setDailyQuests] = useState<DailyQuest[]>([]);
   const [userName, setUserName] = useState('');
   const [showProfileMenu, setShowProfileMenu] = useState(false);
 
   useEffect(() => {
     // Load user name
-    const name = localStorage.getItem('userName') || 'Öğrenci';
+    const name = localStorage.getItem('userName') || t('auth.default_student');
     setUserName(name);
 
     // Load daily quest progress
@@ -29,9 +31,9 @@ export default function QuestsScreen() {
     
     // Define daily quests
     const questTargets = [
-      { id: '1', title: 'Günlük 1 bölüm geç', target: 1 },
-      { id: '2', title: 'Günlük 2 bölüm geç', target: 2 },
-      { id: '3', title: 'Günlük 3 bölüm geç', target: 3 },
+      { id: '1', title: t('quests.daily1'), target: 1 },
+      { id: '2', title: t('quests.daily2'), target: 2 },
+      { id: '3', title: t('quests.daily3'), target: 3 },
     ];
 
     // Calculate daily quest progress
@@ -47,7 +49,7 @@ export default function QuestsScreen() {
     });
 
     setDailyQuests(calculatedQuests);
-  }, []);
+  }, [t]);
 
   const handleLogout = async () => {
     try {
@@ -78,15 +80,15 @@ export default function QuestsScreen() {
         <nav className="sidebar-nav">
           <button className="nav-item" onClick={() => navigate('/map')}>
             <span className="nav-icon">🗺️</span>
-            <span>Harita</span>
+            <span>{t('map.nav_map')}</span>
           </button>
           <button className="nav-item active" onClick={() => navigate('/quests')}>
             <span className="nav-icon">🎯</span>
-            <span>Görevler</span>
+            <span>{t('map.nav_quests')}</span>
           </button>
           <button className="nav-item" onClick={() => navigate('/badges')}>
             <span className="nav-icon">🏆</span>
-            <span>Rozetler</span>
+            <span>{t('map.nav_badges')}</span>
           </button>
         </nav>
 
@@ -97,12 +99,12 @@ export default function QuestsScreen() {
             </div>
             <div className="user-info">
               <span className="user-name">{userName}</span>
-              <span className="user-level">Öğrenci</span>
+              <span className="user-level">{t('auth.default_student')}</span>
             </div>
             {showProfileMenu && (
               <div className="profile-menu">
                 <button onClick={handleLogout} className="logout-btn">
-                  Çıkış Yap
+                  {t('map.logout')}
                 </button>
               </div>
             )}
@@ -114,8 +116,8 @@ export default function QuestsScreen() {
       <main className="main-content-area">
         {/* Header */}
         <header className="content-header">
-          <h1 className="header-title">Günlük Görevler</h1>
-          <p className="header-subtitle">Her gün yeni hedefler, yeni başarılar!</p>
+          <h1 className="header-title">{t('quests.title')}</h1>
+          <p className="header-subtitle">{t('quests.subtitle')}</p>
         </header>
 
         {/* Daily Quests List */}
@@ -132,7 +134,7 @@ export default function QuestsScreen() {
                   <h3>{quest.title}</h3>
                   <div className="quest-progress-container">
                     <div className="progress-label">
-                      <span>İlerleme</span>
+                      <span>{t('quests.progress')}</span>
                       <span>{quest.current} / {quest.target}</span>
                     </div>
                     <div className="quest-progress-track">

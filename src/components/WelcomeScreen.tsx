@@ -1,8 +1,11 @@
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../contexts/LanguageContext';
+import LanguageSwitcher from './LanguageSwitcher';
 import './WelcomeScreen.css';
 
 export default function WelcomeScreen() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   return (
     <div className="welcome-container">
@@ -17,27 +20,27 @@ export default function WelcomeScreen() {
             </div>
           </div>
           <div className="nav-links">
-            <a href="#ozellikler">Özellikler</a>
-            <a href="#nasil-calisir">Nasıl Çalışır?</a>
-            <a href="#hakkimizda">Hakkımızda</a>
-            <a href="#iletisim" className="nav-contact-btn">İletişim</a>
+            <a href="#ozellikler">{t('nav.features')}</a>
+            <a href="#nasil-calisir">{t('nav.how_it_works')}</a>
+            <a href="#hakkimizda">{t('nav.about')}</a>
+            <LanguageSwitcher />
+            <a href="#iletisim" className="nav-contact-btn">{t('nav.contact')}</a>
           </div>
         </nav>
 
         {/* Main Hero Content */}
         <div className="hero-content">
           <div className="hero-text-area">
-            <h2 className="hero-subtitle">ÖZEL EĞİTİM PLATFORMU</h2>
+            <h2 className="hero-subtitle">{t('hero.subtitle')}</h2>
             <h1 className="hero-title">
-              <span className="title-white">Eğlenceli</span>
-              <span className="title-color">Öğrenme</span>
+              <span className="title-white">{t('hero.title_fun')}</span>
+              <span className="title-color">{t('hero.title_learning')}</span>
             </h1>
             <p className="hero-description">
-              Hayal gücünün öğrenmeyle buluştuğu yer. Çocuklarımız için güvenli, 
-              eğlenceli ve öğretici bir dijital dünya.
+              {t('hero.description')}
             </p>
             <button className="cta-button" onClick={() => navigate('/name')}>
-              HAYDİ BAŞLAYALIM
+              {t('hero.cta_button')}
             </button>
           </div>
           
@@ -67,37 +70,33 @@ export default function WelcomeScreen() {
       {/* Features Section - SEO Rich */}
       <section className="info-section" id="ozellikler">
         <div className="section-header">
-          <h3>Renklerle Dolu Bir Yolculuk</h3>
-          <h2>Her Çocuğun Hikayesi Özeldir</h2>
+          <h3>{t('features.journey_title')}</h3>
+          <h2>{t('features.story_title')}</h2>
           <p className="section-intro">
-            Özel gereksinimli çocuklar için uzmanlar tarafından hazırlanan içeriklerimizle, 
-            öğrenme sürecini bir oyuna dönüştürüyoruz.
+            {t('features.intro')}
           </p>
         </div>
 
         <div className="cards-grid">
           <div className="info-card blue">
             <div className="card-icon">🎨</div>
-            <h4>Görsel Öğrenme</h4>
+            <h4>{t('features.visual.title')}</h4>
             <p>
-              Otizm ve dikkat eksikliği olan çocuklar için özel tasarlanmış 
-              görsel kartlar ve hikayeler ile kavramları daha kolay öğrenin.
+              {t('features.visual.description')}
             </p>
           </div>
           <div className="info-card green">
             <div className="card-icon">🌱</div>
-            <h4>Bireysel İlerleme</h4>
+            <h4>{t('features.individual.title')}</h4>
             <p>
-              Her çocuğun öğrenme hızı farklıdır. Yapay zeka destekli sistemimiz, 
-              çocuğunuzun seviyesine uygun alıştırmalar sunar.
+              {t('features.individual.description')}
             </p>
           </div>
           <div className="info-card red">
             <div className="card-icon">❤️</div>
-            <h4>Duygusal Gelişim</h4>
+            <h4>{t('features.emotional.title')}</h4>
             <p>
-              Sadece akademik değil, sosyal ve duygusal becerileri de destekleyen 
-              senaryolarla bütüncül bir gelişim hedefliyoruz.
+              {t('features.emotional.description')}
             </p>
           </div>
         </div>
@@ -112,24 +111,24 @@ export default function WelcomeScreen() {
         </div>
         
         <div className="container">
-          <h2 className="section-title-white">Nasıl Başlarım?</h2>
+          <h2 className="section-title-white">{t('how.title')}</h2>
           <div className="steps-container">
             <div className="step-item">
               <div className="step-number">1</div>
-              <h4>Profil Oluştur</h4>
-              <p>Çocuğunuzun ismini girerek kişiselleştirilmiş bir deneyim başlatın.</p>
+              <h4>{t('how.step1.title')}</h4>
+              <p>{t('how.step1.description')}</p>
             </div>
             <div className="step-arrow">➜</div>
             <div className="step-item">
               <div className="step-number">2</div>
-              <h4>Seviye Seç</h4>
-              <p>Hazırlık, kelime oyunu veya hikaye modlarından uygun olanı seçin.</p>
+              <h4>{t('how.step2.title')}</h4>
+              <p>{t('how.step2.description')}</p>
             </div>
             <div className="step-arrow">➜</div>
             <div className="step-item">
               <div className="step-number">3</div>
-              <h4>Öğrenmeye Başla</h4>
-              <p>İnteraktif oyunlar ve ödüllerle eğlenceli öğrenmenin tadını çıkarın.</p>
+              <h4>{t('how.step3.title')}</h4>
+              <p>{t('how.step3.description')}</p>
             </div>
           </div>
         </div>
@@ -142,24 +141,21 @@ export default function WelcomeScreen() {
              <img src="/assets/2.png" alt="Arkadaş Panda ve Eğitim Materyalleri" className="friend-panda" />
           </div>
           <div className="about-text">
-            <h3>NEDEN ÖZEL ÖĞREN?</h3>
-            <h2>Özel Eğitimde Dijital Dönüşüm</h2>
+            <h3>{t('about.why_title')}</h3>
+            <h2>{t('about.digital_title')}</h2>
             <p>
-              Özel Öğren, <strong>özel gereksinimli bireylerin</strong> eğitim süreçlerini desteklemek amacıyla geliştirilmiş kapsamlı bir platformdur. 
-              Milli Eğitim Bakanlığı müfredatına uygun kazanımları, dijital oyunlaştırma teknikleriyle birleştiriyoruz.
+              {t('about.paragraph1')}
             </p>
             <p>
-              Platformumuz; <strong>kavram öğretimi</strong>, <strong>günlük yaşam becerileri</strong>, 
-              <strong>iletişim becerileri</strong> ve <strong>okuma-yazma hazırlık</strong> çalışmalarını kapsar. 
-              Tablet ve bilgisayar üzerinden erişilebilir yapısıyla, eğitimin sürekliliğini evde de sağlar.
+              {t('about.paragraph2')}
             </p>
             <ul className="feature-list">
-              <li>✅ Dikkat süresini artıran etkileşimli içerikler</li>
-              <li>✅ Sesli ve görsel yönergelerle bağımsız kullanım</li>
-              <li>✅ Başarı hissini pekiştiren anında geri bildirimler</li>
+              <li>✅ {t('about.feature1')}</li>
+              <li>✅ {t('about.feature2')}</li>
+              <li>✅ {t('about.feature3')}</li>
             </ul>
             <button className="secondary-button" onClick={() => navigate('/name')}>
-              HEMEN DENEYİN
+              {t('about.try_button')}
             </button>
           </div>
         </div>
@@ -169,24 +165,24 @@ export default function WelcomeScreen() {
       <footer className="main-footer" id="iletisim">
         <div className="footer-content">
           <div className="footer-col">
-            <h4>Özel Öğren</h4>
-            <p>Çocuklarımızın potansiyelini sevgi ve teknolojiyle keşfediyoruz.</p>
+            <h4>{t('footer.title')}</h4>
+            <p>{t('footer.description')}</p>
           </div>
           <div className="footer-col">
-            <h4>Hızlı Erişim</h4>
-            <a href="#ozellikler">Özellikler</a>
-            <a href="#nasil-calisir">Nasıl Çalışır?</a>
-            <a href="#programlar">Programlar</a>
+            <h4>{t('footer.quick_access')}</h4>
+            <a href="#ozellikler">{t('footer.features')}</a>
+            <a href="#nasil-calisir">{t('footer.how_it_works')}</a>
+            <a href="#programlar">{t('footer.programs')}</a>
           </div>
           <div className="footer-col">
-            <h4>Destek</h4>
-            <a href="#">Sıkça Sorulan Sorular</a>
-            <a href="#">Gizlilik Politikası</a>
-            <a href="#">İletişim</a>
+            <h4>{t('footer.support')}</h4>
+            <a href="#">{t('footer.faq')}</a>
+            <a href="#">{t('footer.privacy')}</a>
+            <a href="#">{t('footer.contact')}</a>
           </div>
         </div>
         <div className="footer-bottom">
-          <p>&copy; 2025 Özel Öğren Eğitim Platformu. Tüm hakları saklıdır.</p>
+          <p>{t('footer.copyright')}</p>
         </div>
       </footer>
     </div>

@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../contexts/LanguageContext';
 import './WelcomeMessageScreen.css';
 
 export default function WelcomeMessageScreen() {
   const [userName, setUserName] = useState('');
   const [isAnimating, setIsAnimating] = useState(false);
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   useEffect(() => {
     // Get name from localStorage
@@ -36,12 +38,12 @@ export default function WelcomeMessageScreen() {
         </div>
         
         <div className={`text-container ${isAnimating ? 'fade-up' : ''}`}>
-          <h2 className="welcome-greeting">Harika!</h2>
+          <h2 className="welcome-greeting">{t('welcome_msg.great')}</h2>
           <h1 className="welcome-name">
-            Memnun oldum, <br />
+            {t('welcome_msg.nice_to_meet')}, <br />
             <span className="name-highlight">{userName}</span>!
           </h1>
-          <p className="loading-text">Maceran hazırlanıyor...</p>
+          <p className="loading-text">{t('welcome_msg.preparing')}</p>
           <div className="loading-bar">
             <div className="loading-fill"></div>
           </div>

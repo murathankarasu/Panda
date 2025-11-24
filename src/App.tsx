@@ -4,6 +4,7 @@ import { Level } from './types';
 import { levels as localLevels } from './data/levels';
 import { loadProgress, syncProgress } from './utils/progress';
 import { firebaseService } from './services/firebaseService';
+import { LanguageProvider } from './contexts/LanguageContext';
 import WelcomeScreen from './components/WelcomeScreen';
 import NameScreen from './components/NameScreen';
 import WelcomeMessageScreen from './components/WelcomeMessageScreen';
@@ -120,39 +121,41 @@ function App() {
   }
 
   return (
-    <Router>
-      <Routes>
-        <Route 
-          path="/" 
-          element={<WelcomeScreen />} 
-        />
-        <Route 
-          path="/name" 
-          element={<NameScreen />} 
-        />
-        <Route 
-          path="/welcome-message" 
-          element={<WelcomeMessageScreen />} 
-        />
-        <Route 
-          path="/map" 
-          element={<MapView levels={levelsWithProgress} />} 
-        />
-        <Route 
-          path="/quests" 
-          element={<QuestsScreen />} 
-        />
-        <Route 
-          path="/badges" 
-          element={<BadgesScreen />} 
-        />
-        <Route 
-          path="/admin" 
-          element={<AdminDashboard />} 
-        />
-        <Route path="/level/:levelId" element={<LevelPage />} />
-      </Routes>
-    </Router>
+    <LanguageProvider>
+      <Router>
+        <Routes>
+          <Route 
+            path="/" 
+            element={<WelcomeScreen />} 
+          />
+          <Route 
+            path="/name" 
+            element={<NameScreen />} 
+          />
+          <Route 
+            path="/welcome-message" 
+            element={<WelcomeMessageScreen />} 
+          />
+          <Route 
+            path="/map" 
+            element={<MapView levels={levelsWithProgress} />} 
+          />
+          <Route 
+            path="/quests" 
+            element={<QuestsScreen />} 
+          />
+          <Route 
+            path="/badges" 
+            element={<BadgesScreen />} 
+          />
+          <Route 
+            path="/admin" 
+            element={<AdminDashboard />} 
+          />
+          <Route path="/level/:levelId" element={<LevelPage />} />
+        </Routes>
+      </Router>
+    </LanguageProvider>
   );
 }
 

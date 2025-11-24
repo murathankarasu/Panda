@@ -5,6 +5,7 @@ import { levels as allLevels } from '../../data/levels';
 import { updateLevelProgress, unlockNextLevel } from '../../utils/progress';
 import { incrementLevelCompletedToday } from '../../utils/dailyQuests';
 import { firebaseService } from '../../services/firebaseService';
+import { useLanguage } from '../../contexts/LanguageContext';
 import './CelebrationLevel.css';
 import type { MatchTarget, TimelineItem, MemoryPair, ColorConfig, PuzzlePiece, CelebrationConfig } from '../../types/celebration';
 import { getCelebrationConfig } from '../../data/celebrationConfigs';
@@ -106,6 +107,7 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
   const [config, setConfig] = useState<CelebrationConfig | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   useEffect(() => {
     const loadConfig = async () => {
@@ -350,7 +352,7 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
   );
 
   if (isLoading) {
-    return <div className="loading-screen">Yükleniyor...</div>;
+    return <div className="loading-screen">{t('common.loading')}</div>;
   }
 
   if (!config) {
@@ -599,7 +601,7 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
     }
     const success = quizSelection === config.quiz.correctIndex;
     setQuizSolved(success);
-    setQuizFeedback(success ? 'Doğru cevap, tebrikler!' : 'Başka bir seçenek dene.');
+    setQuizFeedback(success ? t('celebration.quiz_correct') : t('celebration.quiz_try_again'));
   };
 
   // Silhouette Game Handlers
@@ -667,7 +669,7 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
     const selectedItem = config.oddOneOutGame?.items.find(i => i.id === oddOneOutSelection);
     if (selectedItem && selectedItem.isOdd) {
       setOddOneOutSolved(true);
-      setOddOneOutFeedback('Tebrikler! Farklı olanı buldun.');
+      setOddOneOutFeedback(t('celebration.odd_correct'));
     } else {
       setOddOneOutFeedback('Tekrar dene, bu diğerlerine benziyor.');
     }
@@ -761,7 +763,7 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
         </div>
         <div className="word-actions">
         <button className="ghost-action" onClick={handleWordUndo} disabled={!wordProgress.length || wordSolved}>Geri Al</button>
-        <button className="primary-action" onClick={handleWordCheck}>Kontrol Et</button>
+        <button className="primary-action" onClick={handleWordCheck}>{t('celebration.check')}</button>
         </div>
         {wordFeedback && <div className="feedback">{wordFeedback}</div>}
       </>
@@ -796,7 +798,7 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
       </div>
       <div className="actions">
         <button className="ghost-action" onClick={handleMatchReset}>Sıfırla</button>
-        <button className="primary-action" onClick={handleMatchCheck}>Kontrol Et</button>
+        <button className="primary-action" onClick={handleMatchCheck}>{t('celebration.check')}</button>
       </div>
       {matchFeedback && <div className="feedback">{matchFeedback}</div>}
     </>
@@ -854,7 +856,7 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
       </div>
       <div className="actions">
         <button className="ghost-action" onClick={handleColorReset}>Sıfırla</button>
-        <button className="primary-action" onClick={handleColorCheck}>Kontrol Et</button>
+        <button className="primary-action" onClick={handleColorCheck}>{t('celebration.check')}</button>
       </div>
       {colorFeedback && <div className="feedback">{colorFeedback}</div>}
     </>
@@ -1058,7 +1060,7 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
           </li>
         ))}
       </ul>
-      <div className="actions"><button className="primary-action" onClick={handleTimelineCheck}>Kontrol Et</button></div>
+      <div className="actions"><button className="primary-action" onClick={handleTimelineCheck}>{t('celebration.check')}</button></div>
       {timelineFeedback && <div className="feedback">{timelineFeedback}</div>}
     </>
   );
@@ -1092,7 +1094,7 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
         ))}
       </div>
       <div className="actions">
-          <button className="primary-action" onClick={handleOddOneOutCheck}>Kontrol Et</button>
+          <button className="primary-action" onClick={handleOddOneOutCheck}>{t('celebration.check')}</button>
         </div>
         {oddOneOutFeedback && <div className="feedback">{oddOneOutFeedback}</div>}
       </>
@@ -1110,7 +1112,7 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
         </button>
         ))}
       </div>
-      <div className="actions"><button className="primary-action" onClick={handleQuizCheck}>Kontrol Et</button></div>
+      <div className="actions"><button className="primary-action" onClick={handleQuizCheck}>{t('celebration.check')}</button></div>
       {quizFeedback && <div className="feedback">{quizFeedback}</div>}
     </>
   );

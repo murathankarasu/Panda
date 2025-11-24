@@ -4,6 +4,7 @@ import { Level } from '../types';
 import { getLevelProgress } from '../utils/progress';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
+import { useLanguage } from '../contexts/LanguageContext';
 import './MapView.css';
 
 interface MapViewProps {
@@ -12,13 +13,14 @@ interface MapViewProps {
 
 export default function MapView({ levels }: MapViewProps) {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [userName, setUserName] = useState('');
   const [showProfileMenu, setShowProfileMenu] = useState(false);
 
   useEffect(() => {
-    const name = localStorage.getItem('userName') || 'Öğrenci';
+    const name = localStorage.getItem('userName') || t('auth.default_student');
     setUserName(name);
-  }, []);
+  }, [t]);
 
   const handleLogout = async () => {
     try {
@@ -27,7 +29,7 @@ export default function MapView({ levels }: MapViewProps) {
       localStorage.removeItem('sila_egitim_userid');
       navigate('/');
     } catch (error) {
-      console.error('Çıkış hatası:', error);
+      console.error(t('map.logout_error'), error);
     }
   };
 
@@ -118,15 +120,15 @@ export default function MapView({ levels }: MapViewProps) {
         <nav className="sidebar-nav">
           <button className="nav-item active" onClick={() => navigate('/map')}>
             <span className="nav-icon">🗺️</span>
-            <span>Harita</span>
+            <span>{t('map.nav_map')}</span>
           </button>
           <button className="nav-item" onClick={() => navigate('/quests')}>
             <span className="nav-icon">🎯</span>
-            <span>Görevler</span>
+            <span>{t('map.nav_quests')}</span>
           </button>
           <button className="nav-item" onClick={() => navigate('/badges')}>
             <span className="nav-icon">🏆</span>
-            <span>Rozetler</span>
+            <span>{t('map.nav_badges')}</span>
           </button>
         </nav>
 
@@ -137,12 +139,12 @@ export default function MapView({ levels }: MapViewProps) {
             </div>
             <div className="user-info">
               <span className="user-name">{userName}</span>
-              <span className="user-level">Seviye {Math.floor(completedCount / 5) + 1}</span>
+              <span className="user-level">{t('map.level')} {Math.floor(completedCount / 5) + 1}</span>
             </div>
             {showProfileMenu && (
               <div className="profile-menu">
                 <button onClick={handleLogout} className="logout-btn">
-                  Çıkış Yap
+                  {t('map.logout')}
                 </button>
               </div>
             )}
@@ -154,14 +156,14 @@ export default function MapView({ levels }: MapViewProps) {
       <main className="map-content">
         <header className="map-header">
           <div>
-            <h1>Maceraya Devam Et</h1>
+            <h1>{t('map.continue_adventure')}</h1>
             <p className="progress-text">
-              {completedCount}/{totalLevels} bölüm tamamlandı • %{completionRate}
+              {completedCount}/{totalLevels} {t('map.chapters_completed')} • %{completionRate}
             </p>
           </div>
           {nextLevel && (
             <button className="continue-btn" onClick={() => handleLevelClick(nextLevel)}>
-              <span>Sıradaki: {nextLevel.title}</span>
+              <span>{t('map.next')}: {nextLevel.title}</span>
               <span className="btn-arrow">→</span>
             </button>
           )}
@@ -174,7 +176,7 @@ export default function MapView({ levels }: MapViewProps) {
               <div key={category} className="unit-section">
                 <div className="unit-header">
                   <h2>{category}</h2>
-                  <span className="unit-count">{categoryLevels.length} Bölüm</span>
+                  <span className="unit-count">{categoryLevels.length} {t('map.chapters')}</span>
                 </div>
                 
                 <div className="levels-grid">

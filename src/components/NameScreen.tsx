@@ -10,12 +10,14 @@ import {
 } from 'firebase/auth';
 import { auth } from '../firebase';
 import { firebaseService } from '../services/firebaseService';
+import { useLanguage } from '../contexts/LanguageContext';
 import './NameScreen.css';
 
 type AuthMode = 'login' | 'register';
 
 export default function NameScreen() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [mode, setMode] = useState<AuthMode>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -25,7 +27,7 @@ export default function NameScreen() {
 
   const handleSuccess = async (userCred: UserCredential) => {
     const user = userCred.user;
-    const displayName = name || user.displayName || 'Öğrenci';
+    const displayName = name || user.displayName || t('auth.default_student');
     
     // LocalStorage güncelle
     localStorage.setItem('userName', displayName);
@@ -45,7 +47,7 @@ export default function NameScreen() {
       await handleSuccess(result);
     } catch (err: any) {
       console.error(err);
-      setError('Google ile giriş yapılamadı. Lütfen tekrar deneyin.');
+      setError(t('auth.google_error'));
     } finally {
       setIsLoading(false);
     }
@@ -71,15 +73,15 @@ export default function NameScreen() {
     } catch (err: any) {
       console.error(err);
       if (err.code === 'auth/email-already-in-use') {
-        setError('Bu e-posta adresi zaten kullanımda.');
+        setError(t('auth.email_in_use'));
       } else if (err.code === 'auth/wrong-password') {
-        setError('Hatalı şifre.');
+        setError(t('auth.wrong_password'));
       } else if (err.code === 'auth/user-not-found') {
-        setError('Kullanıcı bulunamadı.');
+        setError(t('auth.user_not_found'));
       } else if (err.code === 'auth/weak-password') {
-        setError('Şifre en az 6 karakter olmalı.');
+        setError(t('auth.weak_password'));
       } else {
-        setError('Bir hata oluştu. Lütfen bilgilerinizi kontrol edin.');
+        setError(t('auth.general_error'));
       }
     } finally {
       setIsLoading(false);
@@ -95,8 +97,8 @@ export default function NameScreen() {
             <span className="logo-text-color">Özel</span>
             <span className="logo-text-white">Öğren</span>
           </div>
-          <h2>{mode === 'login' ? 'Tekrar Hoş Geldin!' : 'Aramıza Katıl'}</h2>
-          <p>Eğlenceli öğrenme yolculuğu seni bekliyor.</p>
+          <h2>{mode === 'login' ? t('auth.welcome_back') : t('auth.join_us')}</h2>
+          <p>{t('auth.journey_awaits')}</p>
         </div>
 
         {/* Google Button */}
@@ -106,21 +108,21 @@ export default function NameScreen() {
           disabled={isLoading}
         >
           <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" />
-          <span>Google ile {mode === 'login' ? 'Giriş Yap' : 'Kayıt Ol'}</span>
+          <span>{mode === 'login' ? t('auth.google_login') : t('auth.google_register')}</span>
         </button>
 
         <div className="auth-divider">
-          <span>veya</span>
+          <span>{t('auth.or')}</span>
         </div>
 
         {/* Email Form */}
         <form className="auth-form" onSubmit={handleEmailAuth}>
           {mode === 'register' && (
             <div className="form-group">
-              <label>İsim</label>
+              <label>{t('auth.name')}</label>
               <input
                 type="text"
-                placeholder="Adını yaz..."
+                placeholder={t('auth.name_placeholder')}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
@@ -129,10 +131,10 @@ export default function NameScreen() {
           )}
           
           <div className="form-group">
-            <label>E-posta</label>
+            <label>{t('auth.email')}</label>
             <input
               type="email"
-              placeholder="ornek@email.com"
+              placeholder={t('auth.email_placeholder')}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -140,7 +142,7 @@ export default function NameScreen() {
           </div>
 
           <div className="form-group">
-            <label>Şifre</label>
+            <label>{t('auth.password')}</label>
             <input
               type="password"
               placeholder="******"
@@ -158,14 +160,14 @@ export default function NameScreen() {
             className="submit-btn"
             disabled={isLoading}
           >
-            {isLoading ? 'İşleniyor...' : (mode === 'login' ? 'GİRİŞ YAP' : 'KAYIT OL')}
+            {isLoading ? t('auth.processing') : (mode === 'login' ? t('auth.login_button') : t('auth.register_button'))}
           </button>
         </form>
 
         {/* Footer / Toggle */}
         <div className="auth-footer">
           <p>
-            {mode === 'login' ? 'Hesabın yok mu?' : 'Zaten hesabın var mı?'}
+            {mode === 'login' ? t('auth.no_account') : t('auth.have_account')}
             <button 
               className="toggle-btn"
               onClick={() => {
@@ -173,7 +175,7 @@ export default function NameScreen() {
                 setError(null);
               }}
             >
-              {mode === 'login' ? 'Kayıt Ol' : 'Giriş Yap'}
+              {mode === 'login' ? t('auth.register_link') : t('auth.login_link')}
             </button>
           </p>
         </div>

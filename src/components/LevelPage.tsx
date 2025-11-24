@@ -6,6 +6,7 @@ import { updateLevelProgress, unlockNextLevel } from '../utils/progress';
 import { incrementLevelCompletedToday } from '../utils/dailyQuests';
 import { speakText, stopSpeaking, getTTSVolume, setTTSVolume, isSpeaking } from '../utils/tts';
 import { firebaseService } from '../services/firebaseService';
+import { useLanguage } from '../contexts/LanguageContext';
 import './LevelPage.css';
 import CelebrationLevel from './levels/CelebrationLevel';
 
@@ -14,6 +15,7 @@ type ScreenState = 'story' | 'question' | 'result';
 export default function LevelPage() {
   const { levelId } = useParams<{ levelId: string }>();
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [screenState, setScreenState] = useState<ScreenState>('story');
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
@@ -92,7 +94,7 @@ export default function LevelPage() {
   }, [levelId]);
 
   if (isLoading) {
-    return <div className="loading-screen">Yükleniyor...</div>;
+    return <div className="loading-screen">{t('common.loading')}</div>;
   }
 
   if (level && isCelebration) {
@@ -159,9 +161,9 @@ export default function LevelPage() {
   if (!level || !content) {
     return (
       <div className="level-page error">
-        <h2>Seviye bulunamadı</h2>
-        <p>Bu seviye henüz hazırlanmamış olabilir.</p>
-        <button onClick={() => navigate('/map')}>Ana Sayfaya Dön</button>
+        <h2>{t('level.not_found')}</h2>
+        <p>{t('level.not_ready')}</p>
+        <button onClick={() => navigate('/map')}>{t('level.back_to_map')}</button>
       </div>
     );
   }
@@ -318,7 +320,7 @@ export default function LevelPage() {
                 onClick={() => !showResult && handleAnswer(0)}
                 disabled={showResult}
               >
-                Doğru
+                {t('level.true')}
               </button>
               <button
                 className={`option-button ${
@@ -333,7 +335,7 @@ export default function LevelPage() {
                 onClick={() => !showResult && handleAnswer(1)}
                 disabled={showResult}
               >
-                Yanlış
+                {t('level.false')}
               </button>
             </div>
           </div>
@@ -382,7 +384,7 @@ export default function LevelPage() {
           <div className="story-content-container">
             <div className="story-header">
               <button className="back-button" onClick={() => navigate('/map')}>
-                ← Geri
+                ← {t('common.back')}
               </button>
               <h2 className="level-title">{level.title}</h2>
               <p className="level-subtitle">{level.description}</p>
@@ -398,13 +400,13 @@ export default function LevelPage() {
                 <button 
                   className={`play-button ${isPlaying ? 'playing' : ''}`}
                   onClick={handlePlayStory}
-                  title={isPlaying ? 'Duraklat' : 'Oku'}
+                  title={isPlaying ? t('level.pause') : t('level.play')}
                 >
                   {isPlaying ? '⏸' : '▶'}
                 </button>
                 
                 <div className="volume-control">
-                  <label>🔊 Ses Seviyesi</label>
+                  <label>🔊 {t('level.volume')}</label>
                   <input
                     type="range"
                     min="0"
@@ -419,7 +421,7 @@ export default function LevelPage() {
               </div>
 
               <button className="continue-button" onClick={handleStoryContinue}>
-                Devam Et →
+                {t('level.continue')} →
               </button>
             </div>
           </div>
@@ -433,7 +435,7 @@ export default function LevelPage() {
     <div className="level-page question-screen">
       <div className="question-header">
         <button className="back-button" onClick={() => navigate('/map')}>
-          ← Geri
+          ← {t('common.back')}
         </button>
         <h2>{level.title}</h2>
         <div className="progress-bar">
@@ -445,19 +447,19 @@ export default function LevelPage() {
           />
         </div>
         <div className="question-counter">
-          Soru {currentQuestionIndex + 1} / {content.questions.length}
+          {t('level.question')} {currentQuestionIndex + 1} / {content.questions.length}
         </div>
       </div>
 
       <div className="question-scoreboard">
         <div className="score-item">
           <span className="score-icon">⭐</span>
-          <span className="score-text">{currentScore} Puan</span>
+          <span className="score-text">{currentScore} {t('level.points')}</span>
         </div>
         <div className="score-item">
           <span className="score-icon">🎯</span>
           <span className="score-text">
-            {correctCount} / {totalQuestions} Doğru
+            {correctCount} / {totalQuestions} {t('level.correct')}
           </span>
         </div>
       </div>
@@ -470,16 +472,16 @@ export default function LevelPage() {
             {selectedAnswer === currentQuestion.correctAnswer ? (
               <>
                 <span className="result-icon">✓</span>
-                <p>Harika! Doğru kartı seçtin!</p>
+                <p>{t('level.correct_answer')}</p>
                 <p className="reward-text">
-                  {currentQuestion.reward || '🎉 +10 Panda Puanı'}
+                  {currentQuestion.reward || t('level.reward_points')}
                 </p>
               </>
             ) : (
               <>
                 <span className="result-icon">✗</span>
                 <p>
-                  Doğru kart: {getOptionLabel(currentQuestion, currentQuestion.correctAnswer as number)}
+                  {t('level.correct_card')}: {getOptionLabel(currentQuestion, currentQuestion.correctAnswer as number)}
                 </p>
               </>
             )}
@@ -488,7 +490,7 @@ export default function LevelPage() {
             )}
           </div>
           <button className="next-button" onClick={handleQuestionNext}>
-            {currentQuestionIndex < content.questions.length - 1 ? 'Devam Et →' : 'Bölümü Tamamla'}
+            {currentQuestionIndex < content.questions.length - 1 ? t('level.continue') + ' →' : t('level.complete_chapter')}
           </button>
         </div>
       )}

@@ -57,12 +57,24 @@ const normalizeCelebrationConfig = (config?: CelebrationConfig | null): Celebrat
     return { ...emptyCelebrationConfig };
   }
 
+  const normalizedMatchItems = (config.matchItems || []).map(item => ({
+    id: item.id,
+    label: item.label || '',
+    badge: item.badge ?? (item as any).icon ?? '🌟'
+  }));
+
+  const normalizedMatchTargets = (config.matchTargets || []).map(target => ({
+    id: target.id,
+    prompt: target.prompt || '',
+    answer: target.answer || normalizedMatchItems.find(item => item.id)?.id || ''
+  }));
+
   return {
     ...emptyCelebrationConfig,
     ...config,
     wordGame: { ...emptyCelebrationConfig.wordGame, ...(config.wordGame || {}) },
-    matchItems: config.matchItems || [],
-    matchTargets: config.matchTargets || [],
+    matchItems: normalizedMatchItems,
+    matchTargets: normalizedMatchTargets,
     memoryPairs: config.memoryPairs || [],
     colorGrid: {
       target:
@@ -238,28 +250,44 @@ export default function AdminDashboard() {
       setHasUnsavedChanges(true);
   };
 
-  // Create New Level
-  const handleCreateLevel = async () => {
-    const newId = prompt('Yeni Bölüm ID (örn: yeni-bolum):');
-    if (!newId) return;
-    
-    const title = prompt('Bölüm Başlığı:');
-    if (!title) return;
+  // Create New Level - Modal State
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [newLevelDraft, setNewLevelDraft] = useState({
+    id: '',
+    title: '',
+    category: 'Milli Bayramlar',
+    type: 'celebration' as 'celebration' | 'standard'
+  });
 
-    const type = confirm('Bu bir "Kutlama" (Oyunlu/Videolu) bölümü mü olsun?\n\nTamam = Evet (Kutlama)\nİptal = Hayır (Standart Hikaye/Soru)') 
-      ? 'celebration' 
-      : 'standard';
+  const handleCreateLevel = () => {
+    setShowCreateModal(true);
+    setNewLevelDraft({
+      id: '',
+      title: '',
+      category: 'Milli Bayramlar',
+      type: 'celebration'
+    });
+  };
 
-    const category = prompt('Kategori (Milli Bayramlar, Özel Günler vb.):');
-    if (!category) return;
+  const handleConfirmCreate = async () => {
+    if (!newLevelDraft.id || !newLevelDraft.title) {
+      showFlash('error', 'ID ve Başlık zorunludur');
+      return;
+    }
+
+    // Check if ID already exists
+    if (levels.find(l => l.id === newLevelDraft.id)) {
+      showFlash('error', 'Bu ID zaten kullanımda');
+      return;
+    }
 
     const newLevel: Level = {
-      id: newId,
-      title,
-      description: 'Yeni oluşturulan bölüm',
+      id: newLevelDraft.id,
+      title: newLevelDraft.title,
+      description: 'Yeni oluşturulan bölüm - düzenlenmeyi bekliyor',
       order: levels.length + 1,
-      category,
-      unlocked: false,
+      category: newLevelDraft.category,
+      unlocked: true,
       completed: false,
       stars: 0
     };
@@ -267,10 +295,10 @@ export default function AdminDashboard() {
     console.log('➕ [ADMIN LOG] Yeni bölüm oluşturuluyor:', {
       timestamp: new Date().toLocaleString('tr-TR'),
       user: username || 'admin',
-      levelId: newId,
-      title,
-      type,
-      category,
+      levelId: newLevelDraft.id,
+      title: newLevelDraft.title,
+      type: newLevelDraft.type,
+      category: newLevelDraft.category,
       order: newLevel.order
     });
 
@@ -281,33 +309,125 @@ export default function AdminDashboard() {
       await firebaseService.saveLevel(newLevel);
       console.log('✅ [ADMIN LOG] Level metadata kaydedildi');
 
-      if (type === 'celebration') {
-        console.log('🎉 [ADMIN LOG] Celebration config oluşturuluyor...');
-        const newConfig = { ...emptyCelebrationConfig, id: newId };
-        await firebaseService.saveCelebrationConfig(newId, newConfig);
-        console.log('✅ [ADMIN LOG] Celebration config oluşturuldu');
+      if (newLevelDraft.type === 'celebration') {
+        console.log('🎉 [ADMIN LOG] Celebration config oluşturuluyor (template ile)...');
+        const templateConfig: CelebrationConfig = {
+          ...emptyCelebrationConfig,
+          id: newLevelDraft.id,
+          intro: 'Hoş geldin! Bu özel günü birlikte kutlayacağız.',
+          videoId: '',
+          completionMessage: 'Harika! Kutlamayı tamamladın! 🎉',
+          prepHints: [
+            'Rahat bir yere otur',
+            'Sesini aç',
+            'Hazırsan başlayalım!'
+          ],
+          stepTitles: ['Hazırlık', 'Oyunlar', 'Kutlama'],
+          wordGame: {
+            prompt: 'Harfleri doğru sıraya diz',
+            answer: 'KUTLAMA',
+            letterPool: ['K', 'U', 'T', 'L', 'A', 'M', 'A']
+          },
+          matchItems: [
+            { id: 'm1', label: 'Balon', badge: '🎈' },
+            { id: 'm2', label: 'Pasta', badge: '🎂' },
+            { id: 'm3', label: 'Hediye', badge: '🎁' }
+          ],
+          matchTargets: [
+            { id: 't1', prompt: 'Havada uçan süsleme', answer: 'm1' },
+            { id: 't2', prompt: 'Tatlı sürpriz', answer: 'm2' },
+            { id: 't3', prompt: 'Paketlenmiş sürpriz', answer: 'm3' }
+          ],
+          memoryPairs: [
+            { id: 'p1', icon: '🎉' },
+            { id: 'p2', icon: '🎊' },
+            { id: 'p3', icon: '🎁' }
+          ],
+          colorGrid: {
+            target: createEmptyGrid(5, 5),
+            palette: defaultPalette
+          },
+          puzzlePieces: [
+            { id: 'pz1', icon: '🎈', color: '#FF6B9D' },
+            { id: 'pz2', icon: '🎊', color: '#C06C84' },
+            { id: 'pz3', icon: '🎉', color: '#6C5B7B' }
+          ],
+          rhythmActions: [
+            { id: 'r1', label: 'Alkış', icon: '👏' },
+            { id: 'r2', label: 'Zıpla', icon: '⬆️' }
+          ],
+          rhythmSequence: ['r1', 'r1', 'r2'],
+          timeline: [
+            { id: 'tm1', label: 'Hazırlık', order: 0 },
+            { id: 'tm2', label: 'Kutlama', order: 1 }
+          ],
+          quiz: {
+            question: 'Bu kutlama hangi tarihte?',
+            options: ['1 Ocak', '23 Nisan', '29 Ekim'],
+            correctIndex: 0
+          },
+          sortingGame: {
+            categories: [
+              { id: 'cat1', label: 'Yiyecek', icon: '🍕', color: '#FF6B9D' },
+              { id: 'cat2', label: 'İçecek', icon: '🥤', color: '#54A0FF' }
+            ],
+            items: [
+              { id: 'i1', label: 'Pizza', icon: '🍕', category: 'cat1' },
+              { id: 'i2', label: 'Su', icon: '💧', category: 'cat2' }
+            ]
+          },
+          silhouetteGame: [
+            { id: 's1', label: 'Balon', icon: '🎈', color: '#FF6B9D' }
+          ],
+          oddOneOutGame: {
+            items: [
+              { id: 'o1', icon: '🎈', isOdd: false },
+              { id: 'o2', icon: '🎈', isOdd: false },
+              { id: 'o3', icon: '🎁', isOdd: true }
+            ]
+          }
+        };
+        await firebaseService.saveCelebrationConfig(newLevelDraft.id, templateConfig);
+        console.log('✅ [ADMIN LOG] Celebration config oluşturuldu (template ile)');
       } else {
-        console.log('📖 [ADMIN LOG] Standard content oluşturuluyor...');
-        const newContent = { ...emptyLevelContent, levelId: newId };
+        console.log('📖 [ADMIN LOG] Standard content oluşturuluyor (template ile)...');
+        const templateContent: LevelContent = {
+          ...emptyLevelContent,
+          levelId: newLevelDraft.id,
+          story: 'Bu bölümün hikayesi buraya gelecek. Admin tarafından düzenlenmeyi bekliyor.',
+          questions: [
+            {
+              id: 'q1',
+              type: 'multiple-choice',
+              question: 'Örnek soru - düzenle',
+              options: ['Seçenek 1', 'Seçenek 2', 'Seçenek 3'],
+              correctAnswer: 0,
+              reward: '10 Puan'
+            }
+          ]
+        };
         const { doc, setDoc } = await import('firebase/firestore');
         const { db } = await import('../firebase');
-        await setDoc(doc(db, 'level_contents', newId), newContent);
-        console.log('✅ [ADMIN LOG] Standard content oluşturuldu');
+        await setDoc(doc(db, 'level_contents', newLevelDraft.id), templateContent);
+        console.log('✅ [ADMIN LOG] Standard content oluşturuldu (template ile)');
       }
 
       await loadLevels();
       
       console.log('🎯 [ADMIN LOG] Yeni bölüm başarıyla oluşturuldu!', {
         timestamp: new Date().toLocaleString('tr-TR'),
-        levelId: newId
+        levelId: newLevelDraft.id
       });
       
-      showFlash('success', 'Yeni bölüm oluşturuldu!');
-      selectLevel(newLevel);
+      setShowCreateModal(false);
+      showFlash('success', '✨ Yeni bölüm template ile oluşturuldu! Şimdi düzenleyebilirsiniz.');
+      
+      // Auto-select the new level for immediate editing
+      setTimeout(() => selectLevel(newLevel), 500);
     } catch (error) {
       console.error('❌ [ADMIN LOG] Bölüm oluşturma hatası:', {
         timestamp: new Date().toLocaleString('tr-TR'),
-        levelId: newId,
+        levelId: newLevelDraft.id,
         error: error
       });
       showFlash('error', 'Bölüm oluşturulamadı.');
@@ -927,25 +1047,28 @@ export default function AdminDashboard() {
                             <div key={item.id} style={{ display: 'flex', gap: '10px', marginBottom: '10px', background: '#fff', padding: '15px', borderRadius: '15px', border: '2px solid #eee', alignItems: 'flex-end' }}>
                                 <div style={{ flex: 1 }}>
                                     <label style={{fontSize: '0.8rem', fontWeight: 'bold', display: 'block', marginBottom: '5px'}}>Kart (Öğe)</label>
-                                    <input type="text" value={item.label} onChange={(e) => {
-                                        const newItems = [...activeCelebration.matchItems];
-                                        newItems[i].label = e.target.value;
+                                    <input type="text" value={item.label || ''} onChange={(e) => {
+                                        const newItems = activeCelebration.matchItems.map((it, idx) => 
+                                            idx === i ? { ...it, label: e.target.value } : it
+                                        );
                                         updateCelebration({ matchItems: newItems });
                                     }} placeholder="Örn: Elma" />
                       </div>
                                 <div style={{ width: '80px' }}>
                                     <label style={{fontSize: '0.8rem', fontWeight: 'bold', display: 'block', marginBottom: '5px'}}>İkon</label>
-                                    <input type="text" value={item.badge} onChange={(e) => {
-                                        const newItems = [...activeCelebration.matchItems];
-                                        newItems[i].badge = e.target.value;
+                                    <input type="text" value={item.badge || ''} onChange={(e) => {
+                                        const newItems = activeCelebration.matchItems.map((it, idx) => 
+                                            idx === i ? { ...it, badge: e.target.value } : it
+                                        );
                                         updateCelebration({ matchItems: newItems });
                                     }} style={{textAlign: 'center', fontSize: '1.5rem'}} placeholder="🍎" />
                     </div>
                                 <div style={{ flex: 1 }}>
                                     <label style={{fontSize: '0.8rem', fontWeight: 'bold', display: 'block', marginBottom: '5px'}}>Hedef (Soru/İpucu)</label>
                                     <input type="text" value={activeCelebration.matchTargets[i]?.prompt || ''} onChange={(e) => {
-                                        const newTargets = [...activeCelebration.matchTargets];
-                                        if(newTargets[i]) newTargets[i].prompt = e.target.value;
+                                        const newTargets = activeCelebration.matchTargets.map((target, idx) => 
+                                            idx === i ? { ...target, prompt: e.target.value } : target
+                                        );
                                         updateCelebration({ matchTargets: newTargets });
                                     }} placeholder="Örn: Kırmızı meyve" />
                   </div>
@@ -1549,12 +1672,99 @@ export default function AdminDashboard() {
                 <div className="admin-field-group">
                     <label>Konu / Tema</label>
                     <input type="text" placeholder="Örn: 23 Nisan, Hayvanlar..." value={aiTopic} onChange={(e) => setAiTopic(e.target.value)} autoFocus />
-                  </div>
+                </div>
                 <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', marginTop: '20px' }}>
                     <button className="admin-button secondary" onClick={() => setShowAIModal(false)}>İptal</button>
                     <button className="admin-button primary" onClick={handleAIGenerate} disabled={isGenerating || !aiTopic}>{isGenerating ? 'Üretiliyor...' : 'Üret'}</button>
                 </div>
-          </div>
+            </div>
+        </div>
+      )}
+
+      {showCreateModal && (
+        <div className="modal-overlay" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, backdropFilter: 'blur(4px)' }}>
+            <div className="modal-content" style={{ background: 'white', padding: '40px', borderRadius: '24px', width: '500px', maxWidth: '90%', boxShadow: '0 20px 60px rgba(0,0,0,0.3)' }}>
+                <h2 style={{ margin: '0 0 10px 0', fontSize: '1.8rem', color: '#2D2D2D' }}>✨ Yeni Bölüm Oluştur</h2>
+                <p style={{ margin: '0 0 30px 0', color: '#666', fontSize: '0.95rem' }}>Template içerikle başla, sonra düzenle!</p>
+                
+                <div className="admin-field-group" style={{ marginBottom: '20px' }}>
+                    <label style={{ fontWeight: 'bold', marginBottom: '8px', display: 'block' }}>📝 Bölüm ID <span style={{ color: 'red' }}>*</span></label>
+                    <input 
+                        type="text" 
+                        placeholder="ornek-bolum (küçük harf, tire ile)" 
+                        value={newLevelDraft.id} 
+                        onChange={(e) => setNewLevelDraft({...newLevelDraft, id: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-')})} 
+                        style={{ padding: '12px', fontSize: '1rem' }}
+                        autoFocus
+                    />
+                    <small style={{ display: 'block', marginTop: '5px', color: '#666' }}>Benzersiz bir ID girin (URL'de görünecek)</small>
+                </div>
+
+                <div className="admin-field-group" style={{ marginBottom: '20px' }}>
+                    <label style={{ fontWeight: 'bold', marginBottom: '8px', display: 'block' }}>📌 Başlık <span style={{ color: 'red' }}>*</span></label>
+                    <input 
+                        type="text" 
+                        placeholder="Örn: 23 Nisan Ulusal Egemenlik Bayramı" 
+                        value={newLevelDraft.title} 
+                        onChange={(e) => setNewLevelDraft({...newLevelDraft, title: e.target.value})} 
+                        style={{ padding: '12px', fontSize: '1rem' }}
+                    />
+                </div>
+
+                <div className="admin-field-group" style={{ marginBottom: '20px' }}>
+                    <label style={{ fontWeight: 'bold', marginBottom: '8px', display: 'block' }}>📂 Kategori</label>
+                    <select 
+                        value={newLevelDraft.category} 
+                        onChange={(e) => setNewLevelDraft({...newLevelDraft, category: e.target.value})}
+                        style={{ padding: '12px', fontSize: '1rem', width: '100%', borderRadius: '10px', border: '1px solid #ddd' }}
+                    >
+                        <option value="Milli Bayramlar">Milli Bayramlar</option>
+                        <option value="Özel Günler">Özel Günler</option>
+                        <option value="Kültür">Kültür</option>
+                        <option value="Tarih">Tarih</option>
+                        <option value="Diğer">Diğer</option>
+                    </select>
+                </div>
+
+                <div className="admin-field-group" style={{ marginBottom: '30px' }}>
+                    <label style={{ fontWeight: 'bold', marginBottom: '8px', display: 'block' }}>🎮 Bölüm Tipi</label>
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                        <button 
+                            className={`admin-button ${newLevelDraft.type === 'celebration' ? 'primary' : 'secondary'}`}
+                            onClick={() => setNewLevelDraft({...newLevelDraft, type: 'celebration'})}
+                            style={{ flex: 1, padding: '15px', fontSize: '1rem' }}
+                        >
+                            🎉 Kutlama (Oyunlu)
+                        </button>
+                        <button 
+                            className={`admin-button ${newLevelDraft.type === 'standard' ? 'primary' : 'secondary'}`}
+                            onClick={() => setNewLevelDraft({...newLevelDraft, type: 'standard'})}
+                            style={{ flex: 1, padding: '15px', fontSize: '1rem' }}
+                        >
+                            📖 Standart (Hikaye)
+                        </button>
+                    </div>
+                    <small style={{ display: 'block', marginTop: '10px', color: '#666', textAlign: 'center' }}>
+                        {newLevelDraft.type === 'celebration' 
+                            ? '✨ Video + tüm oyunlar ile hazır template' 
+                            : '📚 Hikaye + sorular ile hazır template'}
+                    </small>
+                </div>
+
+                <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', marginTop: '30px' }}>
+                    <button className="admin-button secondary" onClick={() => setShowCreateModal(false)} style={{ padding: '12px 24px', fontSize: '1rem' }}>
+                        ❌ İptal
+                    </button>
+                    <button 
+                        className="admin-button primary" 
+                        onClick={handleConfirmCreate} 
+                        disabled={isLoading || !newLevelDraft.id || !newLevelDraft.title}
+                        style={{ padding: '12px 24px', fontSize: '1rem', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}
+                    >
+                        {isLoading ? '⏳ Oluşturuluyor...' : '✨ Template ile Oluştur'}
+                    </button>
+                </div>
+            </div>
         </div>
       )}
     </div>
