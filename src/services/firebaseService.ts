@@ -116,7 +116,18 @@ export const firebaseService = {
       const docRef = doc(db, CELEBRATION_COLLECTION, levelId);
       const snap = await getDoc(docRef);
       if (snap.exists()) {
-        return snap.data() as CelebrationConfig;
+        const data = snap.data() as any;
+        
+        // Deserialize colorGrid.target if it's a string
+        if (data.colorGrid && typeof data.colorGrid.target === 'string') {
+          try {
+            data.colorGrid.target = JSON.parse(data.colorGrid.target);
+          } catch (e) {
+            console.warn('Failed to parse colorGrid.target:', e);
+          }
+        }
+        
+        return data as CelebrationConfig;
       }
       // Fallback to local base config
       return baseCelebrationConfigs[levelId] || null;
@@ -128,7 +139,32 @@ export const firebaseService = {
 
   saveCelebrationConfig: async (levelId: string, config: CelebrationConfig) => {
     const docRef = doc(db, CELEBRATION_COLLECTION, levelId);
-    await setDoc(docRef, config);
+    
+    // Firebase doesn't support nested arrays, so we serialize colorGrid.target
+    const serializedConfig = {
+      ...config,
+      colorGrid: {
+        ...config.colorGrid,
+        target: JSON.stringify(config.colorGrid.target)
+      }
+    };
+    
+    await setDoc(docRef, serializedConfig);
+  },
+
+  // Level Yönetimi (Admin)
+  saveLevel: async (level: Level) => {
+    const docRef = doc(db, LEVELS_COLLECTION, level.id);
+    await setDoc(docRef, level);
+  },
+
+  deleteLevel: async (levelId: string) => {
+    // Sadece level metadata'sını silelim, içeriği tutabiliriz veya onu da silebiliriz.
+    // Şimdilik sadece level listesinden silelim.
+    // Not: Firestore'da deleteDoc import edilmeli.
+    const { deleteDoc } = await import('firebase/firestore');
+    const docRef = doc(db, LEVELS_COLLECTION, levelId);
+    await deleteDoc(docRef);
   },
 
   // Veri Yükleme (Admin/Geliştirici için)

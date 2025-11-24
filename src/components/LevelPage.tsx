@@ -21,30 +21,66 @@ export default function LevelPage() {
   const [correctCount, setCorrectCount] = useState(0);
   const [ttsVolume, setTtsVolume] = useState(getTTSVolume());
   const [isPlaying, setIsPlaying] = useState(false);
+  
   const [content, setContent] = useState<LevelContent | null>(null);
-  const [level, setLevel] = useState<Level | undefined>(
-    localLevels.find(l => l.id === levelId)
-  );
+  const [level, setLevel] = useState<Level | undefined>(undefined);
+  const [isCelebration, setIsCelebration] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadData = async () => {
       if (!levelId) return;
+      setIsLoading(true);
 
       try {
-        // Fetch content
-        const contentData = await firebaseService.getLevelContent(levelId);
-        if (contentData) {
-          setContent(contentData);
+        // 1. Fetch Level Info
+        // First check local (fast)
+        let currentLevel = localLevels.find(l => l.id === levelId);
+        
+        // Then check remote (authoritative)
+        const allLevels = await firebaseService.getLevels();
+        const remoteLevel = allLevels.find(l => l.id === levelId);
+        
+        if (remoteLevel) {
+          currentLevel = remoteLevel;
+        }
+        setLevel(currentLevel);
+
+        // 2. Check if it is a Celebration Level
+        // Check hardcoded list first (legacy support)
+        const legacyCelebrationIds = new Set([
+          'milli-29-ekim',
+          'milli-23-nisan',
+          'milli-19-mayis',
+          'milli-30-agustos'
+        ]);
+
+        let isCeleb = legacyCelebrationIds.has(levelId);
+
+        // If not in legacy list, check if config exists in Firebase (New dynamic levels)
+        if (!isCeleb) {
+           const celebConfig = await firebaseService.getCelebrationConfig(levelId);
+           // Note: getCelebrationConfig returns local config fallback too. 
+           // We assume if it returns a config with valid ID, it's a celebration level.
+           // However, baseCelebrationConfigs might return undefined for unknown IDs.
+           if (celebConfig && celebConfig.id === levelId) {
+             isCeleb = true;
+           }
+        }
+        setIsCelebration(isCeleb);
+
+        // 3. Fetch Standard Content (if not celebration, or hybrid)
+        if (!isCeleb) {
+            const contentData = await firebaseService.getLevelContent(levelId);
+            if (contentData) {
+                setContent(contentData);
+            }
         }
 
-        // Fetch latest level info (optional but good for title updates)
-        const allLevels = await firebaseService.getLevels();
-        const currentLevel = allLevels.find(l => l.id === levelId);
-        if (currentLevel) {
-          setLevel(currentLevel);
-        }
       } catch (error) {
         console.error('Error loading level data:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -55,14 +91,11 @@ export default function LevelPage() {
     };
   }, [levelId]);
 
-  const celebrationIds = new Set([
-    'milli-29-ekim',
-    'milli-23-nisan',
-    'milli-19-mayis',
-    'milli-30-agustos'
-  ]);
+  if (isLoading) {
+    return <div className="loading-screen">Yükleniyor...</div>;
+  }
 
-  if (level && celebrationIds.has(level.id)) {
+  if (level && isCelebration) {
     return <CelebrationLevel level={level} />;
   }
 
@@ -127,6 +160,7 @@ export default function LevelPage() {
     return (
       <div className="level-page error">
         <h2>Seviye bulunamadı</h2>
+        <p>Bu seviye henüz hazırlanmamış olabilir.</p>
         <button onClick={() => navigate('/map')}>Ana Sayfaya Dön</button>
       </div>
     );

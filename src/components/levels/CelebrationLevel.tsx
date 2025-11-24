@@ -36,7 +36,7 @@ const buildMemoryDeck = (pairs: MemoryPair[]): MemoryCard[] => {
       key: `${pair.id}-a`,
       pairId: pair.id,
       icon: pair.icon,
-      label: pair.label,
+      label: pair.label || '',
       revealed: false,
       matched: false,
     },
@@ -44,7 +44,7 @@ const buildMemoryDeck = (pairs: MemoryPair[]): MemoryCard[] => {
       key: `${pair.id}-b`,
       pairId: pair.id,
       icon: pair.icon,
-      label: pair.label,
+      label: pair.label || '',
       revealed: false,
       matched: false,
     },
@@ -844,8 +844,8 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
           {colorGridState.map((row, r) => (
             <div key={r} className="color-row">
               {row.map((c, col) => (
-                <button key={col} className="color-cell" 
-                  style={{ backgroundColor: c ? paletteColorMap.get(c) : '#fff' }}
+                <button key={col} className={`color-cell ${!c ? 'empty' : ''}`} 
+                  style={{ backgroundColor: c ? paletteColorMap.get(c) : undefined }}
                   onClick={() => handleColorCellClick(r, col)} />
               ))}
             </div>

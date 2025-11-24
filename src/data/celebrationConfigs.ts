@@ -4,8 +4,9 @@ export const CELEBRATION_OVERRIDE_KEY = 'celebration_config_overrides';
 
 export const baseCelebrationConfigs: CelebrationConfigMap = {
   'milli-29-ekim': {
+    id: 'milli-29-ekim',
     intro:
-      '29 Ekim 1923’te Türkiye Cumhuriyeti ilan edildi. Bu özel günü özgürlüğümüzü ve birlikte yaşamayı hatırlamak için kutluyoruz.',
+      '29 Ekim 1923\'te Türkiye Cumhuriyeti ilan edildi. Bu özel günü özgürlüğümüzü ve birlikte yaşamayı hatırlamak için kutluyoruz.',
     videoId: 'u2lm7MSh7Wk',
     prepHints: [
       'Videodaki marşı ailecek söylemeye çalış.',
@@ -100,8 +101,9 @@ export const baseCelebrationConfigs: CelebrationConfigMap = {
     completionMessage: 'Cumhuriyetimizin değerlerini çok güzel öğrendin!'
   },
   'milli-23-nisan': {
+    id: 'milli-23-nisan',
     intro:
-      '23 Nisan 1920’de Türkiye Büyük Millet Meclisi açıldı. Atatürk bu günü tüm çocuklara armağan etti.',
+      '23 Nisan 1920\'de Türkiye Büyük Millet Meclisi açıldı. Atatürk bu günü tüm çocuklara armağan etti.',
     videoId: 'EjCqEMqPgeE',
     prepHints: [
       'Videodaki şarkıya eşlik et.',
@@ -197,8 +199,9 @@ export const baseCelebrationConfigs: CelebrationConfigMap = {
     completionMessage: 'Harika! 23 Nisan coşkusunu paylaştın.'
   },
   'milli-19-mayis': {
+    id: 'milli-19-mayis',
     intro:
-      '19 Mayıs 1919’da Atatürk Samsun’a çıkarak Milli Mücadeleyi başlattı. Bu gün gençlere armağan edildi.',
+      '19 Mayıs 1919\'da Atatürk Samsun\'a çıkarak Milli Mücadeleyi başlattı. Bu gün gençlere armağan edildi.',
     videoId: 'fatwAQWFZYI',
     prepHints: [
       'Videodaki ritimle ayağa kalkıp hareket et.',
@@ -294,8 +297,9 @@ export const baseCelebrationConfigs: CelebrationConfigMap = {
     completionMessage: 'Gençlik bayramının ruhunu çok güzel yaşadın!'
   },
   'milli-30-agustos': {
+    id: 'milli-30-agustos',
     intro:
-      '30 Ağustos Zafer Bayramı, Büyük Taarruz’un kazanıldığı gündür. Türk milleti bu zaferle özgürlüğünü kanıtladı.',
+      '30 Ağustos Zafer Bayramı, Büyük Taarruz\'un kazanıldığı gündür. Türk milleti bu zaferle özgürlüğünü kanıtladı.',
     videoId: 'PFSyAEqhp9I',
     prepHints: [
       'Videodaki kahramanlık hikayesini dikkatle dinle.',

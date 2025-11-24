@@ -13,6 +13,7 @@ export interface MatchTarget {
 export interface TimelineItem {
   id: string;
   label: string;
+  order?: number;
 }
 
 export interface QuizConfig {
@@ -24,26 +25,26 @@ export interface QuizConfig {
 export interface MemoryPair {
   id: string;
   icon: string;
-  label: string;
+  label?: string;
 }
 
 export interface ColorPaletteItem {
   id: string;
-  label: string;
   color: string;
+  label?: string;
 }
 
 export interface ColorConfig {
   palette: ColorPaletteItem[];
   target: string[][];
-  hint: string;
+  hint?: string;
 }
 
 export interface PuzzlePiece {
   id: string;
-  label: string;
   icon: string;
   color: string;
+  label?: string;
 }
 
 export interface RhythmAction {
@@ -63,11 +64,11 @@ export interface SortingItem {
   id: string;
   label: string;
   icon: string;
-  category: 'left' | 'right';
+  category: string;
 }
 
 export interface SortingCategory {
-  id: 'left' | 'right';
+  id: string;
   label: string;
   icon: string;
   color: string;
@@ -75,7 +76,7 @@ export interface SortingCategory {
 
 export interface SortingGameConfig {
   items: SortingItem[];
-  categories: [SortingCategory, SortingCategory];
+  categories: SortingCategory[];
 }
 
 export interface SilhouettePair {
@@ -96,6 +97,7 @@ export interface OddOneOutConfig {
 }
 
 export interface CelebrationConfig {
+  id: string;
   intro: string;
   videoId: string;
   prepHints: string[];
@@ -106,7 +108,7 @@ export interface CelebrationConfig {
   memoryPairs: MemoryPair[];
   colorGrid: ColorConfig;
   puzzlePieces: PuzzlePiece[];
-  puzzleHint: string;
+  puzzleHint?: string;
   rhythmActions: RhythmAction[];
   rhythmSequence: string[];
   timeline: TimelineItem[];
