@@ -27,6 +27,7 @@ export interface Question {
   }>;
   correctAnswer?: string | number;
   videoUrl?: string;
+  sectionVideoUrl?: string; // Her bölümden sonra gösterilecek video URL'i
   explanation?: string;
   reward?: string;
 }

@@ -102,6 +102,7 @@ export interface CelebrationConfig {
   videoId: string;
   prepHints: string[];
   stepTitles?: string[];
+  stepVideoUrls?: string[]; // Her step'ten sonra gösterilecek video URL'leri (index step sırasına göre)
   wordGame: WordGameConfig;
   matchItems: MatchItem[];
   matchTargets: MatchTarget[];

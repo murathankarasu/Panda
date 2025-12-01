@@ -7,10 +7,11 @@ import { incrementLevelCompletedToday } from '../utils/dailyQuests';
 import { speakText, stopSpeaking, getTTSVolume, setTTSVolume, isSpeaking } from '../utils/tts';
 import { firebaseService } from '../services/firebaseService';
 import { useLanguage } from '../contexts/LanguageContext';
+import { getVideoUrl } from '../utils/video';
 import './LevelPage.css';
 import CelebrationLevel from './levels/CelebrationLevel';
 
-type ScreenState = 'story' | 'question' | 'result';
+type ScreenState = 'story' | 'question' | 'result' | 'video';
 
 export default function LevelPage() {
   const { levelId } = useParams<{ levelId: string }>();
@@ -23,6 +24,7 @@ export default function LevelPage() {
   const [correctCount, setCorrectCount] = useState(0);
   const [ttsVolume, setTtsVolume] = useState(getTTSVolume());
   const [isPlaying, setIsPlaying] = useState(false);
+  const [currentVideoUrl, setCurrentVideoUrl] = useState<string | null>(null);
   
   const [content, setContent] = useState<LevelContent | null>(null);
   const [level, setLevel] = useState<Level | undefined>(undefined);
@@ -194,11 +196,27 @@ export default function LevelPage() {
   };
 
   const handleQuestionNext = () => {
+    const currentQuestion = content.questions[currentQuestionIndex];
+    const sectionVideoUrl = currentQuestion?.sectionVideoUrl;
+    
+    // Eğer bu soru için video varsa, önce video göster
+    if (sectionVideoUrl && sectionVideoUrl.trim() !== '') {
+      setCurrentVideoUrl(sectionVideoUrl);
+      setScreenState('video');
+      return;
+    }
+    
+    // Video yoksa direkt bir sonraki soruya geç
+    proceedToNextQuestion();
+  };
+
+  const proceedToNextQuestion = () => {
     if (currentQuestionIndex < content.questions.length - 1) {
       // Next question
       setCurrentQuestionIndex(prev => prev + 1);
       setSelectedAnswer(null);
       setShowResult(false);
+      setScreenState('question');
     } else {
       // Level completed
       const stars = Math.floor((correctCount / content.questions.length) * 3);
@@ -215,6 +233,11 @@ export default function LevelPage() {
         navigate('/map');
       }, 2000);
     }
+  };
+
+  const handleVideoContinue = () => {
+    setCurrentVideoUrl(null);
+    proceedToNextQuestion();
   };
 
   const renderQuestion = () => {
@@ -345,6 +368,50 @@ export default function LevelPage() {
         return null;
     }
   };
+
+  // Video Screen
+  if (screenState === 'video' && currentVideoUrl) {
+    const videoInfo = getVideoUrl(currentVideoUrl);
+    
+    return (
+      <div className="level-page video-screen">
+        <div className="video-container">
+          <div className="video-header">
+            <button className="back-button" onClick={() => navigate('/map')}>
+              ← {t('common.back')}
+            </button>
+            <h2>{level.title}</h2>
+          </div>
+          
+          <div className="video-player-wrapper">
+            {videoInfo.type === 'embed' ? (
+              <iframe
+                src={videoInfo.url}
+                className="video-iframe"
+                allow="autoplay; encrypted-media"
+                allowFullScreen
+                title="Section Video"
+              />
+            ) : (
+              <video
+                src={videoInfo.url}
+                className="video-element"
+                controls
+                autoPlay
+                onEnded={handleVideoContinue}
+              />
+            )}
+          </div>
+          
+          <div className="video-controls">
+            <button className="continue-button" onClick={handleVideoContinue}>
+              {t('level.continue')} →
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // Story Screen
   if (screenState === 'story') {

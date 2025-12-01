@@ -29,6 +29,7 @@ const emptyCelebrationConfig: CelebrationConfig = {
   intro: 'Hoş geldin!',
   prepHints: ['Rahat bir yere otur.'],
   stepTitles: ['Hazırlık', 'Kutlama'],
+  stepVideoUrls: [],
   completionMessage: 'Tebrikler!',
   wordGame: { prompt: '', answer: '', letterPool: [] },
   matchItems: [],
@@ -633,7 +634,8 @@ export default function AdminDashboard() {
       question: 'Yeni Soru',
       options: ['Seçenek 1', 'Seçenek 2'],
       correctAnswer: 0,
-      reward: '10 Puan'
+      reward: '10 Puan',
+      sectionVideoUrl: 'https://drive.google.com/file/d/1abc123xyz/preview' // Template video URL
     };
     updateContent({ questions: [...activeContent.questions, newQuestion] });
   };
@@ -914,6 +916,30 @@ export default function AdminDashboard() {
                             <textarea rows={3} value={(activeCelebration.stepTitles || ['Hazırlık', 'Kutlama']).join('\n')} onChange={(e) => updateCelebration({ stepTitles: e.target.value.split('\n').filter(s => s.trim()) })} placeholder="Hazırlık&#10;Oyunlar&#10;Kutlama" />
                             <small>Kullanıcının göreceği adım isimleri (Hazırlık, Oyunlar, Video vb.).</small>
                         </div>
+
+                        <div className="admin-field-group" style={{ marginTop: '30px', paddingTop: '20px', borderTop: '2px solid #e5e7eb' }}>
+                            <label>🎥 Adım Sonrası Video URL'leri (Her satıra bir tane, sırayla)</label>
+                            <textarea 
+                                rows={10} 
+                                value={activeCelebration.stepVideoUrls?.join('\n') || ''} 
+                                onChange={(e) => {
+                                    const urls = e.target.value.split('\n').map(u => u.trim());
+                                    updateCelebration({ stepVideoUrls: urls.some(u => u) ? urls : undefined });
+                                }} 
+                                placeholder="https://youtube.com/watch?v=abc123&#10;&#10;https://youtube.com/watch?v=def456&#10;..."
+                            />
+                            <small>
+                                Her adımdan SONRA gösterilecek video URL'leri. 
+                                <br />
+                                • İlk satır = Kelime Oyunu'ndan sonra, İkinci satır = Eşleştirme'den sonra, vb.
+                                <br />
+                                • <strong>Not:</strong> Hazırlık adımından sonra video gösterilmez
+                                <br />
+                                • Boş satır = O adımdan sonra video yok
+                                <br />
+                                • YouTube, Google Drive veya direkt video URL'leri desteklenir
+                            </small>
+                        </div>
                      </div>
                 )}
 
@@ -965,6 +991,20 @@ export default function AdminDashboard() {
                                             </div>
                                         </div>
                                     )}
+                                    
+                                    <div className="admin-field-group" style={{ marginTop: '15px', paddingTop: '15px', borderTop: '1px solid #ddd' }}>
+                                        <label>🎥 Bölüm Sonrası Video URL (İsteğe Bağlı)</label>
+                                        <input 
+                                            type="text" 
+                                            value={q.sectionVideoUrl || ''} 
+                                            onChange={(e) => handleUpdateQuestion(idx, 'sectionVideoUrl', e.target.value)} 
+                                            placeholder="Google Drive linki veya video URL'i (boş bırakılabilir)"
+                                            style={{ width: '100%' }}
+                                        />
+                                        <small style={{ color: '#666', fontSize: '0.85rem', marginTop: '5px', display: 'block' }}>
+                                            Bu bölümden sonra gösterilecek video. Google Drive linki veya direkt video URL'i girebilirsiniz.
+                                        </small>
+                                    </div>
                                 </div>
                             ))}
                         </div>

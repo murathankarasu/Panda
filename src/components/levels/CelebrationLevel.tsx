@@ -6,6 +6,7 @@ import { updateLevelProgress, unlockNextLevel } from '../../utils/progress';
 import { incrementLevelCompletedToday } from '../../utils/dailyQuests';
 import { firebaseService } from '../../services/firebaseService';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { getVideoUrl } from '../../utils/video';
 import './CelebrationLevel.css';
 import type { MatchTarget, TimelineItem, MemoryPair, ColorConfig, PuzzlePiece, CelebrationConfig } from '../../types/celebration';
 import { getCelebrationConfig } from '../../data/celebrationConfigs';
@@ -243,6 +244,11 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
   const [oddOneOutSolved, setOddOneOutSolved] = useState(false);
 
   const [progressAwarded, setProgressAwarded] = useState(false);
+  
+  // Video state
+  const [showVideo, setShowVideo] = useState(false);
+  const [currentVideoUrl, setCurrentVideoUrl] = useState<string | null>(null);
+  const [pendingNextStep, setPendingNextStep] = useState<number | null>(null);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -675,14 +681,55 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
     }
   };
 
-  const goToPreviousStep = () => setCurrentStep(prev => Math.max(prev - 1, 0));
+  const goToPreviousStep = () => {
+    setShowVideo(false);
+    setCurrentVideoUrl(null);
+    setPendingNextStep(null);
+    setCurrentStep(prev => Math.max(prev - 1, 0));
+  };
+  
   const goToNextStep = () => {
+    const nextStepIndex = currentStep + 1;
+    
+    // Hazırlık (step 0) adımından sonra video gösterilmez
+    if (currentStep === 0) {
+      proceedToStep(nextStepIndex);
+      return;
+    }
+    
+    // Bu step'ten sonra video var mı kontrol et
+    // stepVideoUrls[0] = Kelime Oyunu'ndan sonra, stepVideoUrls[1] = Eşleştirme'den sonra, vb.
+    const stepVideoUrls = config?.stepVideoUrls || [];
+    const videoUrl = stepVideoUrls[currentStep - 1]; // -1 çünkü Hazırlık için video yok
+    
+    if (videoUrl && videoUrl.trim() !== '') {
+      // Video göster
+      setCurrentVideoUrl(videoUrl);
+      setPendingNextStep(nextStepIndex);
+      setShowVideo(true);
+    } else {
+      // Video yok, direkt bir sonraki step'e geç
+      proceedToStep(nextStepIndex);
+    }
+  };
+  
+  const proceedToStep = (stepIndex: number) => {
     setCompletedSteps(prev => {
       const next = [...prev];
       next[currentStep] = true;
       return next;
     });
-    setCurrentStep(prev => Math.min(prev + 1, stepLabels.length - 1));
+    setCurrentStep(Math.min(stepIndex, stepLabels.length - 1));
+  };
+  
+  const handleVideoContinue = () => {
+    setShowVideo(false);
+    setCurrentVideoUrl(null);
+    
+    if (pendingNextStep !== null) {
+      proceedToStep(pendingNextStep);
+      setPendingNextStep(null);
+    }
   };
 
   const isStepComplete = (stepIndex: number): boolean => {
@@ -1159,6 +1206,66 @@ export default function CelebrationLevel({ level }: CelebrationLevelProps) {
       </div>
     );
   };
+
+  // Video Screen
+  if (showVideo && currentVideoUrl) {
+    const videoInfo = getVideoUrl(currentVideoUrl);
+    
+    return (
+      <div className="celebration-level">
+        <div className="step-card fade-in">
+          <h2>{level.title}</h2>
+          <div className="video-player-wrapper" style={{ 
+            width: '100%', 
+            aspectRatio: '16/9', 
+            borderRadius: '20px', 
+            overflow: 'hidden', 
+            boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)',
+            background: '#000',
+            marginBottom: '2rem'
+          }}>
+            {videoInfo.type === 'embed' || currentVideoUrl.includes('youtube.com') || currentVideoUrl.includes('youtu.be') ? (
+              (() => {
+                // YouTube URL'ini embed formatına çevir
+                let embedUrl = currentVideoUrl;
+                if (currentVideoUrl.includes('youtube.com/watch?v=')) {
+                  const videoId = currentVideoUrl.split('v=')[1]?.split('&')[0];
+                  if (videoId) embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                } else if (currentVideoUrl.includes('youtu.be/')) {
+                  const videoId = currentVideoUrl.split('youtu.be/')[1]?.split('?')[0];
+                  if (videoId) embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                }
+                return (
+                  <iframe
+                    src={embedUrl}
+                    className="video-iframe"
+                    style={{ width: '100%', height: '100%', border: 'none' }}
+                    allow="autoplay; encrypted-media"
+                    allowFullScreen
+                    title="Step Video"
+                  />
+                );
+              })()
+            ) : (
+              <video
+                src={videoInfo.url}
+                className="video-element"
+                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                controls
+                autoPlay
+                onEnded={handleVideoContinue}
+              />
+            )}
+          </div>
+          <div className="actions">
+            <button className="primary-action" onClick={handleVideoContinue}>
+              Devam Et →
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="celebration-level">
