@@ -1,4 +1,4 @@
-# Panda - Special Education Platform
+# Sıla Abla - Special Education Platform
 
 Interactive educational platform for children with special needs. Contains educational content, stories, and questions about Religious Holidays.
 

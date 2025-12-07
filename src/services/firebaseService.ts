@@ -1,5 +1,5 @@
-import { db } from '../firebase';
-import { doc, getDoc, setDoc, updateDoc, collection, getDocs, writeBatch } from 'firebase/firestore';
+import { auth, db } from '../firebase';
+import { doc, getDoc, setDoc, updateDoc, collection, getDocs, writeBatch, deleteDoc } from 'firebase/firestore';
 import { levels } from '../data/levels';
 import { levelContent } from '../data/levelContent';
 import { baseCelebrationConfigs } from '../data/celebrationConfigs';
@@ -14,6 +14,14 @@ const CELEBRATION_COLLECTION = 'celebration_configs';
 export const firebaseService = {
   // Kullanıcı Kimliği Yönetimi
   getUserId: () => {
+    // Firebase anonim oturum varsa onu kullan
+    const currentUid = auth.currentUser?.uid;
+    if (currentUid) {
+      localStorage.setItem('sila_egitim_userid', currentUid);
+      return currentUid;
+    }
+
+    // Fall back: eski kullanıcılar için local kimlik
     let userId = localStorage.getItem('sila_egitim_userid');
     if (!userId) {
       userId = 'user_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
@@ -162,7 +170,6 @@ export const firebaseService = {
     // Sadece level metadata'sını silelim, içeriği tutabiliriz veya onu da silebiliriz.
     // Şimdilik sadece level listesinden silelim.
     // Not: Firestore'da deleteDoc import edilmeli.
-    const { deleteDoc } = await import('firebase/firestore');
     const docRef = doc(db, LEVELS_COLLECTION, levelId);
     await deleteDoc(docRef);
   },
@@ -193,4 +200,3 @@ export const firebaseService = {
     console.log('Data seeded to Firestore');
   }
 };
-

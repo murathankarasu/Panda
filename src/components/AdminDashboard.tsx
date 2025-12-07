@@ -3,6 +3,8 @@ import { Level, LevelContent, Question } from '../types';
 import { CelebrationConfig } from '../types/celebration';
 import { firebaseService } from '../services/firebaseService';
 import { generateGameContent } from '../utils/gemini';
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 import './AdminDashboard.css';
 
 const createEmptyGrid = (rows: number, cols: number) =>
@@ -407,8 +409,6 @@ export default function AdminDashboard() {
             }
           ]
         };
-        const { doc, setDoc } = await import('firebase/firestore');
-        const { db } = await import('../firebase');
         await setDoc(doc(db, 'level_contents', newLevelDraft.id), templateContent);
         console.log('✅ [ADMIN LOG] Standard content oluşturuldu (template ile)');
       }
@@ -547,8 +547,6 @@ export default function AdminDashboard() {
           levelId: activeLevelId,
           questionsCount: activeContent.questions.length 
         });
-        const { doc, setDoc } = await import('firebase/firestore');
-        const { db } = await import('../firebase');
         await setDoc(doc(db, 'level_contents', activeLevelId), activeContent);
         console.log('✅ [ADMIN LOG] Level content kaydedildi');
       }

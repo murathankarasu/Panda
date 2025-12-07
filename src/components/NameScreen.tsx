@@ -1,88 +1,60 @@
-import { useState } from 'react';
+import { useState, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
-  GoogleAuthProvider, 
-  signInWithPopup, 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
-  updateProfile,
-  UserCredential 
+  signInAnonymously,
+  signOut,
+  updateProfile
 } from 'firebase/auth';
 import { auth } from '../firebase';
 import { firebaseService } from '../services/firebaseService';
 import { useLanguage } from '../contexts/LanguageContext';
 import './NameScreen.css';
 
-type AuthMode = 'login' | 'register';
-
 export default function NameScreen() {
   const navigate = useNavigate();
   const { t } = useLanguage();
-  const [mode, setMode] = useState<AuthMode>('login');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSuccess = async (userCred: UserCredential) => {
-    const user = userCred.user;
-    const displayName = name || user.displayName || t('auth.default_student');
-    
-    // LocalStorage güncelle
-    localStorage.setItem('userName', displayName);
-    
-    // Firestore'a kullanıcı kaydı
-    await firebaseService.initializeUser(displayName);
-    
-    navigate('/welcome-message');
-  };
-
-  const handleGoogleLogin = async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      await handleSuccess(result);
-    } catch (err: any) {
-      console.error(err);
-      setError(t('auth.google_error'));
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleEmailAuth = async (e: React.FormEvent) => {
+  const handleAnonymousLogin = async (e: FormEvent) => {
     e.preventDefault();
+    if (!name.trim()) {
+      setError(t('auth.name_required'));
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
 
     try {
-      let result: UserCredential;
-      if (mode === 'register') {
-        result = await createUserWithEmailAndPassword(auth, email, password);
-        // İsim güncelleme
-        if (name && auth.currentUser) {
-          await updateProfile(auth.currentUser, { displayName: name });
-        }
-      } else {
-        result = await signInWithEmailAndPassword(auth, email, password);
+      // Eğer daha önce anonim giriş yapıldıysa mevcut oturumu kullan
+      let user = auth.currentUser;
+      if (user && !user.isAnonymous) {
+        await signOut(auth);
+        user = null;
       }
-      await handleSuccess(result);
+
+      if (!user) {
+        const result = await signInAnonymously(auth);
+        user = result.user;
+      }
+
+      const displayName = name.trim() || t('auth.default_student');
+
+      if (user) {
+        await updateProfile(user, { displayName });
+        localStorage.setItem('sila_egitim_userid', user.uid);
+      }
+
+      localStorage.setItem('userName', displayName);
+
+      // Firestore'a kullanıcı kaydı
+      await firebaseService.initializeUser(displayName);
+      navigate('/welcome-message');
     } catch (err: any) {
       console.error(err);
-      if (err.code === 'auth/email-already-in-use') {
-        setError(t('auth.email_in_use'));
-      } else if (err.code === 'auth/wrong-password') {
-        setError(t('auth.wrong_password'));
-      } else if (err.code === 'auth/user-not-found') {
-        setError(t('auth.user_not_found'));
-      } else if (err.code === 'auth/weak-password') {
-        setError(t('auth.weak_password'));
-      } else {
-        setError(t('auth.general_error'));
-      }
+      setError(t('auth.anonymous_error'));
     } finally {
       setIsLoading(false);
     }
@@ -97,59 +69,20 @@ export default function NameScreen() {
             <span className="logo-text-color">Özel</span>
             <span className="logo-text-white">Öğren</span>
           </div>
-          <h2>{mode === 'login' ? t('auth.welcome_back') : t('auth.join_us')}</h2>
-          <p>{t('auth.journey_awaits')}</p>
+          <h2>{t('auth.enter_name_title')}</h2>
+          <p>{t('auth.enter_name_subtitle')}</p>
         </div>
 
-        {/* Google Button */}
-        <button 
-          className="google-btn" 
-          onClick={handleGoogleLogin}
-          disabled={isLoading}
-        >
-          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" />
-          <span>{mode === 'login' ? t('auth.google_login') : t('auth.google_register')}</span>
-        </button>
-
-        <div className="auth-divider">
-          <span>{t('auth.or')}</span>
-        </div>
-
-        {/* Email Form */}
-        <form className="auth-form" onSubmit={handleEmailAuth}>
-          {mode === 'register' && (
-            <div className="form-group">
-              <label>{t('auth.name')}</label>
-              <input
-                type="text"
-                placeholder={t('auth.name_placeholder')}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-            </div>
-          )}
-          
+        {/* Name Form */}
+        <form className="auth-form" onSubmit={handleAnonymousLogin}>
           <div className="form-group">
-            <label>{t('auth.email')}</label>
+            <label>{t('auth.name')}</label>
             <input
-              type="email"
-              placeholder={t('auth.email_placeholder')}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              placeholder={t('auth.name_placeholder')}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               required
-            />
-          </div>
-
-          <div className="form-group">
-            <label>{t('auth.password')}</label>
-            <input
-              type="password"
-              placeholder="******"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              minLength={6}
             />
           </div>
 
@@ -160,25 +93,9 @@ export default function NameScreen() {
             className="submit-btn"
             disabled={isLoading}
           >
-            {isLoading ? t('auth.processing') : (mode === 'login' ? t('auth.login_button') : t('auth.register_button'))}
+            {isLoading ? t('auth.processing') : t('auth.start_button')}
           </button>
         </form>
-
-        {/* Footer / Toggle */}
-        <div className="auth-footer">
-          <p>
-            {mode === 'login' ? t('auth.no_account') : t('auth.have_account')}
-            <button 
-              className="toggle-btn"
-              onClick={() => {
-                setMode(mode === 'login' ? 'register' : 'login');
-                setError(null);
-              }}
-            >
-              {mode === 'login' ? t('auth.register_link') : t('auth.login_link')}
-            </button>
-          </p>
-        </div>
       </div>
 
       {/* Background Decor */}
